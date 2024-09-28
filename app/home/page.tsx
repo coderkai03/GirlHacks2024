@@ -79,6 +79,7 @@ export default function SwipeScreen() {
   const { userData } = useUserData();
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState({
+    "compatibility_score": "?",
     "why_you_should_team_up": "...",
     [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
     [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
@@ -167,7 +168,8 @@ You are a bot that helps to team up hackathon participants. Given the provided J
             }), their interests, and personalities, generate a JSON output with the following information for ${
               userData.name
             } to ask ${profile.name}:
-Why you should team up: Using third perspective - Tell ${profile.name} how ${userData.name}'s skillset and profile could have synergies with ${profile.name}'s skillset and profile in a hackathon team. 
+Compatibility Score: a numeric score out of 100 of how compatibility the two hackers are in a team. Try to keep the range within 70-90.
+Why you should team up: Tell ${userData.name} how ${profile.name}'s skillset and profile could have synergies with ${userData.name}'s skillset and profile in a hackathon team. 
 Ice Breaker Questions: A list of (max 3) icebreaker questions that can be used to initiate conversation relevant to shared interests.
 Suggested Conversation Topics: A list of (max 3) specific conversation topics related to specific shared or contrasting interests.
 Recommended Activities: A list of (max 3) specific projects that would be suitable for both individuals based on their shared interests and personalities.
@@ -177,6 +179,7 @@ Potential Teammate: ${JSON.stringify(profile)}
 
               Output Format:
 {
+  "compatibility_score": "xx",
   "why_you_should_team_up": "...",
   "ice_breaker_questions": [
     // ... list of icebreaker questions
@@ -202,6 +205,12 @@ All content must be specific and hyper relevant to the matching and non matching
         >
           Generate suggestions
         </Button>
+        <div className="suggestion-category mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+            Compatibility Score
+          </h3>
+          {response["compatibility_score"]}
+        </div>
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
             Why You should Team Up!
