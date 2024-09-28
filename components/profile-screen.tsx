@@ -9,10 +9,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
-import { Code, Headphones, Gamepad, Zap } from 'lucide-react'
+import { Code, Headphones, Gamepad, Zap, ChevronRight } from 'lucide-react'
 
 export function ProfileScreenComponent() {
   const [profileColor, setProfileColor] = useState('bg-purple-500')
+  const [profilePicture, setProfilePicture] = useState<string | null>(null) // State for the profile picture
+
 
   const colorOptions = [
     { name: 'Purple', value: 'bg-purple-500' },
@@ -21,6 +23,13 @@ export function ProfileScreenComponent() {
     { name: 'Red', value: 'bg-red-500' },
     { name: 'Yellow', value: 'bg-yellow-500' },
   ]
+  const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const imageUrl = URL.createObjectURL(file)
+      setProfilePicture(imageUrl) 
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">

@@ -180,7 +180,7 @@ All content must be specific and hyper relevant to the matching and non matching
     <div onClick={() => setIsFlipped(!isFlipped)}>
       <div className={`h-48 ${profile.color}`} />
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
-        <Avatar className="w-32 h-32 border-4 border-white mb-4">
+        <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
           <AvatarImage src={profile.image} alt={profile.name} />
           <AvatarFallback>{profile.name[0]}</AvatarFallback>
         </Avatar>
@@ -335,8 +335,9 @@ All content must be specific and hyper relevant to the matching and non matching
           variant="default"
           size="icon"
           onClick={() => handleSwipe("right")}
+          className="bg-green-500 hover:bg-green-600"
         >
-          <Check className="h-4 w-4" />
+          <Check className="h-4 w-4 " />
         </Button>
       </div>
       <div className="mt-4 flex justify-between w-full max-w-md">
