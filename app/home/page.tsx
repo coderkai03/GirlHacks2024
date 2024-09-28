@@ -41,6 +41,7 @@ interface Profile {
   techInterests: string[];
   nonTechInterests: string[];
   color: string;
+  videoUrl: string;
 }
 
 const mockProfiles: Profile[] = [
@@ -53,6 +54,7 @@ const mockProfiles: Profile[] = [
     techInterests: ["AI", "Machine Learning", "Python"],
     nonTechInterests: ["Coffee", "Hiking", "Photography"],
     color: "bg-purple-500",
+    videoUrl: "https://media.tenor.com/r0R0N3dI3kIAAAAM/dancing-cat-dance.gif"
   },
   {
     id: "2",
@@ -63,6 +65,7 @@ const mockProfiles: Profile[] = [
     techInterests: ["VR", "Unity", "C#"],
     nonTechInterests: ["Gaming", "Sci-Fi Movies", "Board Games"],
     color: "bg-green-500",
+    videoUrl: "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"
   },
   {
     id: "3",
@@ -73,11 +76,13 @@ const mockProfiles: Profile[] = [
     techInterests: ["Blockchain", "Solidity", "Web3"],
     nonTechInterests: ["Music Production", "DJing", "Traveling"],
     color: "bg-blue-500",
+    videoUrl: "https://i.pinimg.com/originals/23/51/bc/2351bc65b2b5d75cef146b7edddf805b.gif"
   },
 ];
 
 export default function SwipeScreen() {
   const { userData } = useUserData();
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false)
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState({
     compatibility_score: "?",
@@ -117,6 +122,8 @@ export default function SwipeScreen() {
   );
 
   async function generate_suggestions(profile: Profile) {
+    if (isResponseGenerating) return
+    setIsResponseGenerating(true)
     setResponse({
       compatibility_score: "Loading... Please wait up to 5 seconds!",
       why_you_should_team_up: "Loading... Please wait up to 5 seconds!",
@@ -170,6 +177,7 @@ All content must be specific and hyper relevant to the matching and non matching
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
     // alert(JSON.stringify(resultObject));
+    setIsResponseGenerating(false)
   }
 
   useEffect(() => {
@@ -178,14 +186,18 @@ All content must be specific and hyper relevant to the matching and non matching
 
   const ProfileContentFront = ({ profile }: { profile: Profile }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
-      <video
-        src="https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"
+      
+      {profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
+      alt="this slowpoke moves"    
+           width="640"
+        height="360"/> : <video
+        src={profile.videoUrl}
         width={640}
         height={360}
         autoPlay
-      />
+      />}
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
-        <Avatar className="w-32 h-32 border-4 border-white mb-4">
+        <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
           <AvatarImage src={profile.image} alt={profile.name} />
           <AvatarFallback>{profile.name[0]}</AvatarFallback>
         </Avatar>
@@ -337,8 +349,9 @@ All content must be specific and hyper relevant to the matching and non matching
           variant="default"
           size="icon"
           onClick={() => handleSwipe("right")}
+          className="bg-green-500 hover:bg-green-600"
         >
-          <Check className="h-4 w-4" />
+          <Check className="h-4 w-4 " />
         </Button>
       </div>
       <div className="mt-4 flex justify-between w-full max-w-md">
