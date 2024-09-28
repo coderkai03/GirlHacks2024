@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { Key, useEffect } from 'react'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -40,24 +40,26 @@ export default function DiscoProfileScreen() {
     { name: 'Purple', value: 'bg-purple-600' },
   ]
 
+  let glowColor = "";
+
   useEffect(() => {
     const colors = ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)', 'rgba(255, 255, 0, 0.5)']
     let colorIndex = 0
     const interval = setInterval(() => {
-      updateUserData({ glowColor: colors[colorIndex] });
+      glowColor = colors[colorIndex];
       colorIndex = (colorIndex + 1) % colors.length
     }, 1000)
     return () => clearInterval(interval)
   }, [updateUserData])
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     updateUserData({ [field]: value });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-4">
       <h1 className="text-3xl font-bold mb-4 text-white text-center">Your Groovy Profile</h1>
-      <div className="bg-black rounded-lg shadow-2xl overflow-hidden border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${userData.glowColor}` }}>
+      <div className="bg-black rounded-lg shadow-2xl overflow-hidden border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${glowColor}` }}>
         <div className={`h-48 ${userData.profileColor} relative overflow-hidden`}>
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuXzAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+PGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEwIiBzdHJva2U9IiNGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuXzApIiAvPjwvc3ZnPg==')] opacity-50"></div>
           <Disc className="absolute top-4 right-4 w-12 h-12 text-white animate-spin" style={{ animationDuration: '3s' }} />
@@ -258,7 +260,7 @@ export default function DiscoProfileScreen() {
           </Button>
         </div>
       </div>
-      <div className="mt-8 bg-black rounded-lg shadow-2xl p-6 border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${userData.glowColor}` }}>
+      <div className="mt-8 bg-black rounded-lg shadow-2xl p-6 border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${glowColor}` }}>
         <h2 className="text-2xl font-semibold mb-4 text-white text-center">Profile Preview</h2>
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24 mb-4">
@@ -272,7 +274,7 @@ export default function DiscoProfileScreen() {
           </div>
           <p className="text-center text-gray-300 mb-4">{userData.bio || 'AI enthusiast and disco dancer extraordinaire'}</p>
           <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {userData.techInterests.split(',').map((interest, index) => (
+            {userData.techInterests.split(',').map((interest: string, index: Key | null | undefined) => (
               <Badge key={index} variant="secondary" className="bg-purple-600 text-white">
                 <Code className="w-3 h-3 mr-1 animate-pulse" />
                 {interest.trim()}
@@ -280,7 +282,7 @@ export default function DiscoProfileScreen() {
             ))}
           </div>
           <div className="flex flex-wrap justify-center gap-2">
-            {userData.nonTechInterests.split(',').map((interest, index) => (
+            {userData.nonTechInterests.split(',').map((interest: string, index: Key | null | undefined) => (
               <Badge key={index} variant="outline" className="border-pink-500 text-pink-500">
                 {index === 0 && <Music className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '3s' }} />}
                 {index === 1 && <Headphones className="w-3 h-3 mr-1 animate-pulse" />}

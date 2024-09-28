@@ -56,7 +56,7 @@ const mockProfiles: Profile[] = [
 
 
 export default function SwipeScreen() {
-  const {userData} = useUserData()
+  const {userData} = useUserData();
   const [currentProfile, setCurrentProfile] = useState(0)
 
   const handleSwipe = (direction: 'left' | 'right') => {
@@ -100,7 +100,7 @@ export default function SwipeScreen() {
             </Badge>
           ))}
         </div>
-        {/* <Button onClick={() => console.log(userData)}>userData</Button> */}
+        <Button onClick={() => alert(JSON.stringify(userData))}>userData</Button>
       </CardContent>
     </>
   )
