@@ -107,7 +107,7 @@ export default function SwipeScreen() {
           ))}
         </div>
         <Button onClick={() => alert(JSON.stringify(userData))}>userData</Button>
-        <Button className="m-4" type="primary" onClick={async () => {
+        <Button className="m-4" type="button" onClick={async () => {
               
               const prompt = `
               Prompt:

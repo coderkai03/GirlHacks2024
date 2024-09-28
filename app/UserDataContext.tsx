@@ -2,7 +2,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useUser as useAuth0User } from '@auth0/nextjs-auth0/client';
 
-type UserProfile = {
+export type UserProfile = {
   // Auth0 user properties
   email: string;
   emailVerified: boolean;

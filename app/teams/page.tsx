@@ -64,6 +64,7 @@ export default function Teams() {
           <SelectValue placeholder="Filter by Hackathon" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">All Hackathons</SelectItem>
           <SelectItem value="HackTech 2023">HackTech 2023</SelectItem>
           <SelectItem value="CryptoHack 2023">CryptoHack 2023</SelectItem>
         </SelectContent>
