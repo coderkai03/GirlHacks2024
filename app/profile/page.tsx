@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useUser } from '@auth0/nextjs-auth0/client'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -12,8 +13,33 @@ import { Label } from "@/components/ui/label"
 import { Code, Headphones, Gamepad, Zap, Music, Disc, ChevronRight, Star, Sparkles, Trophy } from 'lucide-react'
 
 export default function DiscoProfileScreen() {
+  const { user } = useUser();
+  
+  // User profile states
+  const [email, setEmail] = useState(user?.email || '')
+  const [emailVerified, setEmailVerified] = useState(user?.email_verified || false)
+  const [name, setName] = useState(user?.name || '')
+  const [nickname, setNickname] = useState(user?.nickname || '')
+  const [picture, setPicture] = useState(user?.picture || '')
+  const [sub, setSub] = useState(user?.sub || '')
+  const [updatedAt, setUpdatedAt] = useState(user?.updated_at || '')
+  const [orgId, setOrgId] = useState(user?.org_id || '')
+
+  // Additional profile states
   const [profileColor, setProfileColor] = useState('bg-fuchsia-500')
   const [glowColor, setGlowColor] = useState('rgba(255, 0, 255, 0.5)')
+  const [bio, setBio] = useState('')
+  const [university, setUniversity] = useState('')
+  const [year, setYear] = useState('')
+  const [internship, setInternship] = useState('')
+  const [hackathons, setHackathons] = useState('')
+  const [wins, setWins] = useState('')
+  const [technologies, setTechnologies] = useState('')
+  const [techInterests, setTechInterests] = useState('')
+  const [nonTechInterests, setNonTechInterests] = useState('')
+  const [preferences, setPreferences] = useState('')
+  const [discord, setDiscord] = useState('')
+  const [linkedin, setLinkedin] = useState('')
 
   const colorOptions = [
     { name: 'Fuchsia', value: 'bg-fuchsia-500' },
@@ -46,8 +72,8 @@ export default function DiscoProfileScreen() {
         <div className="p-6 -mt-24 relative">
           <div className="flex items-center mb-6">
             <Avatar className="w-32 h-32 border-4 border-white mr-4">
-              <AvatarImage src="/placeholder.svg?height=128&width=128" alt="Profile picture" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarImage src={picture || "/placeholder.svg?height=128&width=128"} alt="Profile picture" />
+              <AvatarFallback>{nickname ? nickname.substring(0, 2).toUpperCase() : 'JD'}</AvatarFallback>
             </Avatar>
             <Button className="bg-pink-500 hover:bg-pink-600 text-white">
               Change Picture
@@ -63,20 +89,47 @@ export default function DiscoProfileScreen() {
               <form className="space-y-4">
                 <div>
                   <Label htmlFor="name" className="text-white">Name</Label>
-                  <Input id="name" placeholder="Disco Dan" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="name" 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)}
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email" className="text-white">Email</Label>
+                  <Input 
+                    id="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={true}
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div>
                   <Label htmlFor="bio" className="text-white">Bio</Label>
-                  <Textarea id="bio" placeholder="Tell us about your groovy self..." className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Textarea 
+                    id="bio" 
+                    value={bio} 
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="Tell us about your groovy self..." 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="university" className="text-white">University</Label>
-                    <Input id="university" placeholder="Disco Tech" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                    <Input 
+                      id="university" 
+                      value={university} 
+                      onChange={(e) => setUniversity(e.target.value)}
+                      placeholder="Disco Tech" 
+                      className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                    />
                   </div>
                   <div>
                     <Label htmlFor="year" className="text-white">Year</Label>
-                    <Select>
+                    <Select value={year} onValueChange={setYear}>
                       <SelectTrigger id="year" className="bg-purple-900 text-white border-purple-600">
                         <SelectValue placeholder="Select year" />
                       </SelectTrigger>
@@ -91,29 +144,67 @@ export default function DiscoProfileScreen() {
                 </div>
                 <div>
                   <Label htmlFor="internship" className="text-white">Internship</Label>
-                  <Input id="internship" placeholder="Disco Ball Designer at Studio 54" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="internship" 
+                    value={internship} 
+                    onChange={(e) => setInternship(e.target.value)}
+                    placeholder="Disco Ball Designer at Studio 54" 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div className="flex items-center gap-4">
                   <div>
                     <Label htmlFor="hackathons" className="text-white">Hackathons</Label>
-                    <Input id="hackathons" type="number" placeholder="Participated" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                    <Input 
+                      id="hackathons" 
+                      type="number" 
+                      value={hackathons} 
+                      onChange={(e) => setHackathons(e.target.value)}
+                      placeholder="Participated" 
+                      className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                    />
                   </div>
                   <div>
                     <Label htmlFor="wins" className="text-white">Wins</Label>
-                    <Input id="wins" type="number" placeholder="Number of wins" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                    <Input 
+                      id="wins" 
+                      type="number" 
+                      value={wins} 
+                      onChange={(e) => setWins(e.target.value)}
+                      placeholder="Number of wins" 
+                      className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                    />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="technologies" className="text-white">Technologies</Label>
-                  <Input id="technologies" placeholder="React, Node.js, Disco Lights..." className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="technologies" 
+                    value={technologies} 
+                    onChange={(e) => setTechnologies(e.target.value)}
+                    placeholder="React, Node.js, Disco Lights..." 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div>
                   <Label htmlFor="tech-interests" className="text-white">Tech Interests</Label>
-                  <Input id="tech-interests" placeholder="AI, VR, Holographic Displays..." className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="tech-interests" 
+                    value={techInterests} 
+                    onChange={(e) => setTechInterests(e.target.value)}
+                    placeholder="AI, VR, Holographic Displays..." 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div>
                   <Label htmlFor="non-tech-interests" className="text-white">Non-Tech Interests</Label>
-                  <Input id="non-tech-interests" placeholder="Dancing, DJing, Roller Skating..." className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="non-tech-interests" 
+                    value={nonTechInterests} 
+                    onChange={(e) => setNonTechInterests(e.target.value)}
+                    placeholder="Dancing, DJing, Roller Skating..." 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
               </form>
             </TabsContent>
@@ -121,7 +212,7 @@ export default function DiscoProfileScreen() {
               <form className="space-y-4">
                 <div>
                   <Label htmlFor="profile-color" className="text-white">Profile Color</Label>
-                  <Select onValueChange={setProfileColor} defaultValue={profileColor}>
+                  <Select value={profileColor} onValueChange={setProfileColor}>
                     <SelectTrigger id="profile-color" className="bg-purple-900 text-white border-purple-600">
                       <SelectValue placeholder="Choose a color" />
                     </SelectTrigger>
@@ -136,15 +227,33 @@ export default function DiscoProfileScreen() {
                 </div>
                 <div>
                   <Label htmlFor="preferences" className="text-white">Hackathon Preferences</Label>
-                  <Input id="preferences" placeholder="Disco Balls, Dance Floors, Neon Lights..." className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="preferences" 
+                    value={preferences} 
+                    onChange={(e) => setPreferences(e.target.value)}
+                    placeholder="Disco Balls, Dance Floors, Neon Lights..." 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div>
                   <Label htmlFor="discord" className="text-white">Discord</Label>
-                  <Input id="discord" placeholder="Your Groovy Discord username" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="discord" 
+                    value={discord} 
+                    onChange={(e) => setDiscord(e.target.value)}
+                    placeholder="Your Groovy Discord username" 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
                 <div>
                   <Label htmlFor="linkedin" className="text-white">LinkedIn</Label>
-                  <Input id="linkedin" placeholder="Your Funky LinkedIn profile URL" className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" />
+                  <Input 
+                    id="linkedin" 
+                    value={linkedin} 
+                    onChange={(e) => setLinkedin(e.target.value)}
+                    placeholder="Your Funky LinkedIn profile URL" 
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
                 </div>
               </form>
             </TabsContent>
@@ -159,42 +268,32 @@ export default function DiscoProfileScreen() {
         <h2 className="text-2xl font-semibold mb-4 text-white text-center">Profile Preview</h2>
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24 mb-4">
-            <AvatarImage src="/placeholder.svg?height=96&width=96" alt="Profile picture" />
-            <AvatarFallback>DD</AvatarFallback>
+            <AvatarImage src={picture || "/placeholder.svg?height=96&width=96"} alt="Profile picture" />
+            <AvatarFallback>{nickname ? nickname.substring(0, 2).toUpperCase() : 'DD'}</AvatarFallback>
           </Avatar>
-          <h3 className="text-lg font-semibold text-white">Disco Dan</h3>
+          <h3 className="text-lg font-semibold text-white">{name || 'Disco Dan'}</h3>
           <div className="flex items-center mt-2 mb-4">
             <Trophy className="w-5 h-5 text-yellow-300 mr-1 animate-bounce" />
-            <span className="text-sm font-semibold text-yellow-300">3 Wins</span>
+            <span className="text-sm font-semibold text-yellow-300">{wins ? `${wins} Wins` : '3 Wins'}</span>
           </div>
-          <p className="text-center text-gray-300 mb-4">AI enthusiast and disco dancer extraordinaire</p>
+          <p className="text-center text-gray-300 mb-4">{bio || 'AI enthusiast and disco dancer extraordinaire'}</p>
           <div className="flex flex-wrap justify-center gap-2 mb-4">
-            <Badge variant="secondary" className="bg-purple-600 text-white">
-              <Code className="w-3 h-3 mr-1 animate-pulse" />
-              AI
-            </Badge>
-            <Badge variant="secondary" className="bg-purple-600 text-white">
-              <Code className="w-3 h-3 mr-1 animate-pulse" />
-              Machine Learning
-            </Badge>
-            <Badge variant="secondary" className="bg-purple-600 text-white">
-              <Code className="w-3 h-3 mr-1 animate-pulse" />
-              Disco Lights
-            </Badge>
+            {techInterests.split(',').map((interest, index) => (
+              <Badge key={index} variant="secondary" className="bg-purple-600 text-white">
+                <Code className="w-3 h-3 mr-1 animate-pulse" />
+                {interest.trim()}
+              </Badge>
+            ))}
           </div>
           <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="outline" className="border-pink-500 text-pink-500">
-              <Music className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '3s' }} />
-              Dancing
-            </Badge>
-            <Badge variant="outline" className="border-pink-500 text-pink-500">
-              <Headphones className="w-3 h-3 mr-1 animate-pulse" />
-              DJing
-            </Badge>
-            <Badge variant="outline" className="border-pink-500 text-pink-500">
-              <Gamepad className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '4s' }} />
-              Roller Skating
-            </Badge>
+            {nonTechInterests.split(',').map((interest, index) => (
+              <Badge key={index} variant="outline" className="border-pink-500 text-pink-500">
+                {index === 0 && <Music className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '3s' }} />}
+                {index === 1 && <Headphones className="w-3 h-3 mr-1 animate-pulse" />}
+                {index === 2 && <Gamepad className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '4s' }} />}
+                {interest.trim()}
+              </Badge>
+            ))}
           </div>
         </div>
       </div>
