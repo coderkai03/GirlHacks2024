@@ -221,7 +221,19 @@ export default function ProfileSettings({ userData }: { userData: UserProfile })
               </form>
             </TabsContent>
           </Tabs>
-          <Button type="submit" className="mt-4 bg-cyan-400 hover:bg-cyan-500 text-black font-bold">
+          <Button onClick={async () => {
+            const updatedData = userData;
+            const response = await fetch('/api/users', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(updatedData),
+            });
+            if (!response.ok) {
+              throw new Error('Failed to update user data');
+            }
+          }} type="submit" className="mt-4 bg-cyan-400 hover:bg-cyan-500 text-black font-bold">
             Save Changes
             <Sparkles className="ml-2 w-4 h-4 animate-spin" />
           </Button>
