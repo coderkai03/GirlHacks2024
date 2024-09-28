@@ -11,6 +11,12 @@ import {useUserData} from '../UserDataContext'
 import {GoogleGenerativeAI} from "@google/generative-ai";
 import {cleanJsonString} from '../helpers'
 
+export enum AI_SUGGESTIONS {
+  ICE_BREAKER_QUESTIONS = 'ice_breaker_questions',
+  RECOMMENDED_ACTIVITIES = 'recommended_activities',
+  SUGGESTED_CONVERSATION_TOPICS = 'suggested_conversation_topics'
+}
+
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
 const model = genAI.getGenerativeModel({model: "gemini-1.5-flash"});
 
@@ -63,7 +69,11 @@ const mockProfiles: Profile[] = [
 export default function SwipeScreen() {
   const {userData} = useUserData();
   const [currentProfile, setCurrentProfile] = useState(0)
-  const [response, setResponse] = useState({})
+  const [response, setResponse] = useState({
+    [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
+    [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
+    [AI_SUGGESTIONS.RECOMMENDED_ACTIVITIES]: []
+  });
 
   const handleSwipe = (direction: 'left' | 'right') => {
     if (direction === 'right') {
@@ -73,6 +83,20 @@ export default function SwipeScreen() {
   }
 
   const profile = mockProfiles[currentProfile]
+
+  const renderList = (items: string[], emptyMessage: string = "Generate suggestions by clicking the button below!") => (
+    <ul className="space-y-2">
+      {items.length > 0 ? (
+        items.map((item, index) => (
+          <li key={index} className="bg-gray-100 border border-gray-300 rounded-md p-3 shadow-sm">
+            {item}
+          </li>
+        ))
+      ) : (
+        <li className="text-gray-500 italic">{emptyMessage}</li>
+      )}
+    </ul>
+  );
 
   const ProfileContent = ({ profile }: { profile: Profile }) => (
     <>
@@ -107,7 +131,7 @@ export default function SwipeScreen() {
           ))}
         </div>
         <Button onClick={() => alert(JSON.stringify(userData))}>userData</Button>
-        <Button className="m-4" type="primary" onClick={async () => {
+        <Button className="m-4" onClick={async () => {
               
               const prompt = `
               Prompt:
@@ -144,7 +168,28 @@ All content must be specific and hyper relevant to the matching and non matching
             }}>
               Generate suggestions
             </Button>
+            <div className="suggestion-category mb-4">
+              <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+                Ice Breaker Questions
+              </h3>
+              {renderList(response[AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS])}
+            </div>
+
+            <div className="suggestion-category mb-4">
+              <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+                Suggested Conversation Topics
+              </h3>
+              {renderList(response[AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS])}
+            </div>
+
+            <div className="suggestion-category mb-4">
+              <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+                Recommended Activities
+              </h3>
+              {renderList(response[AI_SUGGESTIONS.RECOMMENDED_ACTIVITIES])}
+            </div>
             {JSON.stringify(response)}
+            
       </CardContent>
     </>
   )
