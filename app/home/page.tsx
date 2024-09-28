@@ -225,45 +225,47 @@ All content must be specific and hyper relevant to the matching and non matching
             </Badge>
           ))}
         </div>
-        <Button onClick={() => alert(JSON.stringify(userData))}>userData</Button>
-        <Button className="m-4" type="button" onClick={async () => {
-              
-              const prompt = `
-              Prompt:
-You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${userData.name} and ${profile.name}), their interests, and personalities, generate a JSON output with the following information for ${userData.name} to ask ${profile.name}:
-Ice Breaker Questions: A list of (max 5) icebreaker questions that can be used to initiate conversation relevant to shared interests.
-Suggested Conversation Topics: A list of (max 5) specific conversation topics related to specific shared or contrasting interests.
-Recommended Activities: A list of (max 7) specific activities that would be suitable for both individuals based on their shared interests and personalities.
+      </CardContent>
+    </div>
+  );
 
-Current User: ${JSON.stringify(userData)}
-Potential Teammate: ${JSON.stringify(profile)}
+  const ProfileContentBack = ({ profile }: { profile: Profile }) => (
+    <div onClick={() => setIsFlipped(!isFlipped)}>
+      <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
+        <Button className="m-4">Generate suggestions</Button>
+        <div className="suggestion-category mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+            Compatibility Score
+          </h3>
+          {response["compatibility_score"]}
+        </div>
+        <div className="suggestion-category mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+            Why You should Team Up!
+          </h3>
+          {response["why_you_should_team_up"]}
+        </div>
+        <div className="suggestion-category mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+            Ice Breaker Questions
+          </h3>
+          {renderList(response[AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS])}
+        </div>
 
-              Output Format:
-{
-  "ice_breaker_questions": [
-    // ... list of icebreaker questions
-  ],
-  "suggested_conversation_topics": [
-    // ... list of conversation topics
-  ],
-  "recommended_activities": [
-    // ... list of recommended activities
-  ]
-}
+        {/* <div className="suggestion-category mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+            Suggested Conversation Topics
+          </h3>
+          {renderList(response[AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS])}
+        </div> */}
 
-All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
-              `;
-              const result = await model.generateContent(prompt);
-              const resultString = result.response.text()
-              console.log(resultString)
-              const cleanedString = cleanJsonString(resultString)
-              const resultObject = JSON.parse(cleanedString)
-              setResponse(resultObject)
-              alert(JSON.stringify(resultObject))
-            }}>
-              Generate suggestions
-            </Button>
-            {JSON.stringify(response)}
+        <div className="suggestion-category mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
+            Recommended Projects
+          </h3>
+          {renderList(response[AI_SUGGESTIONS.RECOMMENDED_PROJECTS])}
+        </div>
+        {/* {JSON.stringify(response)} */}
       </CardContent>
     </div>
   );
