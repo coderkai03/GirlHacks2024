@@ -8,6 +8,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import {useUserData} from '../UserDataContext'
+import {GoogleGenerativeAI} from "@google/generative-ai";
+import {cleanJsonString} from '../helpers'
+
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
+const model = genAI.getGenerativeModel({model: "gemini-1.5-flash"});
 
 interface Profile {
   id: string
@@ -58,6 +63,7 @@ const mockProfiles: Profile[] = [
 export default function SwipeScreen() {
   const {userData} = useUserData();
   const [currentProfile, setCurrentProfile] = useState(0)
+  const [response, setResponse] = useState({})
 
   const handleSwipe = (direction: 'left' | 'right') => {
     if (direction === 'right') {
@@ -101,6 +107,44 @@ export default function SwipeScreen() {
           ))}
         </div>
         <Button onClick={() => alert(JSON.stringify(userData))}>userData</Button>
+        <Button className="m-4" type="primary" onClick={async () => {
+              
+              const prompt = `
+              Prompt:
+You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${userData.name} and ${profile.name}), their interests, and personalities, generate a JSON output with the following information for ${userData.name} to ask ${profile.name}:
+Ice Breaker Questions: A list of (max 5) icebreaker questions that can be used to initiate conversation relevant to shared interests.
+Suggested Conversation Topics: A list of (max 5) specific conversation topics related to specific shared or contrasting interests.
+Recommended Activities: A list of (max 7) specific activities that would be suitable for both individuals based on their shared interests and personalities.
+
+Current User: ${JSON.stringify(userData)}
+Potential Teammate: ${JSON.stringify(profile)}
+
+              Output Format:
+{
+  "ice_breaker_questions": [
+    // ... list of icebreaker questions
+  ],
+  "suggested_conversation_topics": [
+    // ... list of conversation topics
+  ],
+  "recommended_activities": [
+    // ... list of recommended activities
+  ]
+}
+
+All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
+              `;
+              const result = await model.generateContent(prompt);
+              const resultString = result.response.text()
+              console.log(resultString)
+              const cleanedString = cleanJsonString(resultString)
+              const resultObject = JSON.parse(cleanedString)
+              setResponse(resultObject)
+              alert(JSON.stringify(resultObject))
+            }}>
+              Generate suggestions
+            </Button>
+            {JSON.stringify(response)}
       </CardContent>
     </>
   )
