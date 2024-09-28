@@ -22,7 +22,7 @@ import { cleanJsonString } from "../helpers";
 
 export enum AI_SUGGESTIONS {
   ICE_BREAKER_QUESTIONS = "ice_breaker_questions",
-  RECOMMENDED_ACTIVITIES = "recommended_activities",
+  RECOMMENDED_PROJECTS = "recommended_projects",
   SUGGESTED_CONVERSATION_TOPICS = "suggested_conversation_topics",
 }
 
@@ -82,7 +82,7 @@ export default function SwipeScreen() {
     "why_you_should_team_up": "...",
     [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
     [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
-    [AI_SUGGESTIONS.RECOMMENDED_ACTIVITIES]: [],
+    [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
   });
 
   const handleSwipe = (direction: "left" | "right") => {
@@ -156,7 +156,7 @@ export default function SwipeScreen() {
               "why_you_should_team_up": "loading",
               [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
               [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
-              [AI_SUGGESTIONS.RECOMMENDED_ACTIVITIES]: [],
+              [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
             })
             const prompt = `
               Prompt:
@@ -168,9 +168,9 @@ You are a bot that helps to team up hackathon participants. Given the provided J
               userData.name
             } to ask ${profile.name}:
 Why you should team up: Using third perspective - Tell ${profile.name} how ${userData.name}'s skillset and profile could have synergies with ${profile.name}'s skillset and profile in a hackathon team. 
-Ice Breaker Questions: A list of (max 5) icebreaker questions that can be used to initiate conversation relevant to shared interests.
-Suggested Conversation Topics: A list of (max 5) specific conversation topics related to specific shared or contrasting interests.
-Recommended Activities: A list of (max 7) specific activities that would be suitable for both individuals based on their shared interests and personalities.
+Ice Breaker Questions: A list of (max 3) icebreaker questions that can be used to initiate conversation relevant to shared interests.
+Suggested Conversation Topics: A list of (max 3) specific conversation topics related to specific shared or contrasting interests.
+Recommended Activities: A list of (max 3) specific projects that would be suitable for both individuals based on their shared interests and personalities.
 
 Current User: ${JSON.stringify(userData)}
 Potential Teammate: ${JSON.stringify(profile)}
@@ -184,8 +184,8 @@ Potential Teammate: ${JSON.stringify(profile)}
   "suggested_conversation_topics": [
     // ... list of conversation topics
   ],
-  "recommended_activities": [
-    // ... list of recommended activities
+  "recommended_projects": [
+    // ... list of recommended projects
   ]
 }
 
@@ -215,18 +215,18 @@ All content must be specific and hyper relevant to the matching and non matching
           {renderList(response[AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS])}
         </div>
 
-        <div className="suggestion-category mb-4">
+        {/* <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
             Suggested Conversation Topics
           </h3>
           {renderList(response[AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS])}
-        </div>
+        </div> */}
 
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
-            Recommended Activities
+            Recommended Projects
           </h3>
-          {renderList(response[AI_SUGGESTIONS.RECOMMENDED_ACTIVITIES])}
+          {renderList(response[AI_SUGGESTIONS.RECOMMENDED_PROJECTS])}
         </div>
         {/* {JSON.stringify(response)} */}
       </CardContent>
