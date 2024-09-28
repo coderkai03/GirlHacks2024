@@ -30,7 +30,7 @@ export default function DiscoProfileScreen() {
         orgId: auth0User.org_id || ''
       });
     }
-  }, [auth0User, updateUserData]);
+  }, [auth0User]);
 
   const colorOptions = [
     { name: 'Fuchsia', value: 'bg-fuchsia-500' },
