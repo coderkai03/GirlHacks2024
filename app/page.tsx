@@ -33,22 +33,22 @@ export default function HomeScreen() {
           </div>
           <div className="flex items-center">
             {/* Menu Icons */}
-            <button onClick={() => setCurrentScreen(Screens.Home)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
+            <button title="Home" onClick={() => setCurrentScreen(Screens.Home)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
               <Home className="h-6 w-6" />
               <span className="sr-only">Home</span>
             </button>
 
-            <button onClick={() => setCurrentScreen(Screens.Teams)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
+            <button title="Teams" onClick={() => setCurrentScreen(Screens.Teams)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
               <Users className="h-6 w-6" />
               <span className="sr-only">Teams</span>
             </button>
 
-            <button onClick={() => setCurrentScreen(Screens.Profile)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
+            <button title="Profile" onClick={() => setCurrentScreen(Screens.Profile)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
               <User className="h-6 w-6" />
               <span className="sr-only">Profile</span>
             </button>
             
-            <button onClick={() => setCurrentScreen(Screens.Add)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
+            <button title="Add" onClick={() => setCurrentScreen(Screens.Add)} className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
               <PlusCircle className="h-6 w-6" />
               <span className="sr-only">Add</span>
             </button>
