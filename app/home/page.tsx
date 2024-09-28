@@ -1,4 +1,5 @@
 "use client";
+import ReactCardFlip from "react-card-flip";
 
 import { useEffect, useState } from "react";
 import {
@@ -79,8 +80,8 @@ export default function SwipeScreen() {
   const { userData } = useUserData();
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState({
-    "compatibility_score": "?",
-    "why_you_should_team_up": "...",
+    compatibility_score: "?",
+    why_you_should_team_up: "...",
     [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
     [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
     [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
@@ -117,12 +118,12 @@ export default function SwipeScreen() {
 
   async function generate_suggestions(profile: Profile) {
     setResponse({
-      "compatibility_score": "Loading... Please wait up to 5 seconds!",
-      "why_you_should_team_up": "Loading... Please wait up to 5 seconds!",
+      compatibility_score: "Loading... Please wait up to 5 seconds!",
+      why_you_should_team_up: "Loading... Please wait up to 5 seconds!",
       [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
       [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
       [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
-    })
+    });
     const prompt = `
       Prompt:
 You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${
@@ -133,7 +134,11 @@ You are a bot that helps to team up hackathon participants. Given the provided J
       userData.name
     } to ask ${profile.name}:
 Compatibility Score: a numeric score out of 100 of how compatibility the two hackers are in a team. Try to keep the range within 70-90.
-Why you should team up: Tell ${userData.name} how ${profile.name}'s skillset and profile could have synergies with ${userData.name}'s skillset and profile in a hackathon team. 
+Why you should team up: Tell ${userData.name} how ${
+      profile.name
+    }'s skillset and profile could have synergies with ${
+      userData.name
+    }'s skillset and profile in a hackathon team. 
 Ice Breaker Questions: A list of (max 3) icebreaker questions that can be used to initiate conversation relevant to shared interests.
 Suggested Conversation Topics: A list of (max 3) specific conversation topics related to specific shared or contrasting interests.
 Recommended Activities: A list of (max 3) specific projects that would be suitable for both individuals based on their shared interests and personalities.
@@ -168,12 +173,17 @@ All content must be specific and hyper relevant to the matching and non matching
   }
 
   useEffect(() => {
-    generate_suggestions(profile)
-  }, [profile])
+    generate_suggestions(profile);
+  }, [profile]);
 
-  const ProfileContent = ({ profile }: { profile: Profile }) => (
-    <div>
-      <div className={`h-48 ${profile.color}`} />
+  const ProfileContentFront = ({ profile }: { profile: Profile }) => (
+    <div onClick={() => setIsFlipped(!isFlipped)}>
+      <video
+        src="https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"
+        width={640}
+        height={360}
+        autoPlay
+      />
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
         <Avatar className="w-32 h-32 border-4 border-white mb-4">
           <AvatarImage src={profile.image} alt={profile.name} />
@@ -246,6 +256,8 @@ All content must be specific and hyper relevant to the matching and non matching
     </div>
   );
 
+  const [isFlipped, setIsFlipped] = useState(false);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
       {/* <Card className="w-full max-w-md  border-2 border-gray-400 overflow-hidden">
@@ -294,12 +306,21 @@ All content must be specific and hyper relevant to the matching and non matching
           </div>
         </CardContent>
       </Card> */}
-      <Dialog>
-        <DialogTrigger asChild>
+      <ReactCardFlip isFlipped={isFlipped}>
+        <div key="front">
           <Card className="w-full max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
-            <ProfileContent profile={profile} />
+            <ProfileContentFront profile={profile} />
           </Card>
-        </DialogTrigger>
+        </div>
+
+        <div key="back">
+          <Card className="w-full max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            <ProfileContentBack profile={profile} />
+          </Card>
+        </div>
+      </ReactCardFlip>
+      <Dialog>
+        <DialogTrigger asChild></DialogTrigger>
         {/* <DialogContent className="sm:max-w-[425px] max-h-[80vh] flex flex-col">
           <ProfileContent profile={profile} />
         </DialogContent> */}
