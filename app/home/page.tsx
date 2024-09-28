@@ -154,7 +154,8 @@ export default function SwipeScreen() {
           className="m-4"
           onClick={async () => {
             setResponse({
-              "why_you_should_team_up": "loading",
+              "compatibility_score": "loading...",
+              "why_you_should_team_up": "loading...",
               [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
               [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
               [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
