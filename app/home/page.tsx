@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -115,6 +115,62 @@ export default function SwipeScreen() {
     </ul>
   );
 
+  async function generate_suggestions(profile: Profile) {
+    setResponse({
+      "compatibility_score": "Loading... Please wait up to 5 seconds!",
+      "why_you_should_team_up": "Loading... Please wait up to 5 seconds!",
+      [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
+      [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
+      [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
+    })
+    const prompt = `
+      Prompt:
+You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${
+      userData.name
+    } and ${
+      profile.name
+    }), their interests, and personalities, generate a JSON output with the following information for ${
+      userData.name
+    } to ask ${profile.name}:
+Compatibility Score: a numeric score out of 100 of how compatibility the two hackers are in a team. Try to keep the range within 70-90.
+Why you should team up: Tell ${userData.name} how ${profile.name}'s skillset and profile could have synergies with ${userData.name}'s skillset and profile in a hackathon team. 
+Ice Breaker Questions: A list of (max 3) icebreaker questions that can be used to initiate conversation relevant to shared interests.
+Suggested Conversation Topics: A list of (max 3) specific conversation topics related to specific shared or contrasting interests.
+Recommended Activities: A list of (max 3) specific projects that would be suitable for both individuals based on their shared interests and personalities.
+
+Current User: ${JSON.stringify(userData)}
+Potential Teammate: ${JSON.stringify(profile)}
+
+      Output Format:
+{
+"compatibility_score": "xx",
+"why_you_should_team_up": "...",
+"ice_breaker_questions": [
+// ... list of icebreaker questions
+],
+"suggested_conversation_topics": [
+// ... list of conversation topics
+],
+"recommended_projects": [
+// ... list of recommended projects
+]
+}
+
+All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
+      `;
+    const result = await model.generateContent(prompt);
+    const resultString = result.response.text();
+    console.log(resultString);
+    const cleanedString = cleanJsonString(resultString);
+    const resultObject = JSON.parse(cleanedString);
+    setResponse(resultObject);
+    // alert(JSON.stringify(resultObject));
+  }
+
+  useEffect(() => {
+    generate_suggestions(profile)
+  }, [profile])
+
   const ProfileContent = ({ profile }: { profile: Profile }) => (
     <div>
       <div className={`h-48 ${profile.color}`} />
@@ -152,57 +208,6 @@ export default function SwipeScreen() {
         </Button>
         <Button
           className="m-4"
-          onClick={async () => {
-            setResponse({
-              "compatibility_score": "loading...",
-              "why_you_should_team_up": "loading...",
-              [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
-              [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
-              [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
-            })
-            const prompt = `
-              Prompt:
-You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${
-              userData.name
-            } and ${
-              profile.name
-            }), their interests, and personalities, generate a JSON output with the following information for ${
-              userData.name
-            } to ask ${profile.name}:
-Compatibility Score: a numeric score out of 100 of how compatibility the two hackers are in a team. Try to keep the range within 70-90.
-Why you should team up: Tell ${userData.name} how ${profile.name}'s skillset and profile could have synergies with ${userData.name}'s skillset and profile in a hackathon team. 
-Ice Breaker Questions: A list of (max 3) icebreaker questions that can be used to initiate conversation relevant to shared interests.
-Suggested Conversation Topics: A list of (max 3) specific conversation topics related to specific shared or contrasting interests.
-Recommended Activities: A list of (max 3) specific projects that would be suitable for both individuals based on their shared interests and personalities.
-
-Current User: ${JSON.stringify(userData)}
-Potential Teammate: ${JSON.stringify(profile)}
-
-              Output Format:
-{
-  "compatibility_score": "xx",
-  "why_you_should_team_up": "...",
-  "ice_breaker_questions": [
-    // ... list of icebreaker questions
-  ],
-  "suggested_conversation_topics": [
-    // ... list of conversation topics
-  ],
-  "recommended_projects": [
-    // ... list of recommended projects
-  ]
-}
-
-All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
-              `;
-            const result = await model.generateContent(prompt);
-            const resultString = result.response.text();
-            console.log(resultString);
-            const cleanedString = cleanJsonString(resultString);
-            const resultObject = JSON.parse(cleanedString);
-            setResponse(resultObject);
-            // alert(JSON.stringify(resultObject));
-          }}
         >
           Generate suggestions
         </Button>
