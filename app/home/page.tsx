@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 
 interface Profile {
   id: string
@@ -51,6 +52,42 @@ const mockProfiles: Profile[] = [
   },
 ]
 
+const ProfileContent = ({ profile }: { profile: Profile }) => (
+  <>
+    <div className={`h-48 ${profile.color}`} />
+    <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
+      <Avatar className="w-32 h-32 border-4 border-white mb-4">
+        <AvatarImage src={profile.image} alt={profile.name} />
+        <AvatarFallback>{profile.name[0]}</AvatarFallback>
+      </Avatar>
+      <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
+      <div className="flex items-center mb-2">
+        <Zap className="w-5 h-5 text-yellow-500 mr-1" />
+        <span className="text-sm font-semibold">{profile.wins} Wins</span>
+      </div>
+      <p className="text-center mb-4">{profile.bio}</p>
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        {profile.techInterests.map((interest, index) => (
+          <Badge key={index} variant="secondary">
+            <Code className="w-3 h-3 mr-1" />
+            {interest}
+          </Badge>
+        ))}
+      </div>
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        {profile.nonTechInterests.map((interest, index) => (
+          <Badge key={index} variant="outline">
+            {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
+            {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
+            {index === 2 && <ChevronRight className="w-3 h-3 mr-1" />}
+            {interest}
+          </Badge>
+        ))}
+      </div>
+    </CardContent>
+  </>
+)
+
 export default function SwipeScreen() {
   const [currentProfile, setCurrentProfile] = useState(0)
 
@@ -65,47 +102,24 @@ export default function SwipeScreen() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Card className="w-full max-w-md overflow-hidden">
-        <div className={`h-48 ${profile.color}`} />
-        <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
-          <Avatar className="w-32 h-32 border-4 border-white mb-4">
-            <AvatarImage src={profile.image} alt={profile.name} />
-            <AvatarFallback>{profile.name[0]}</AvatarFallback>
-          </Avatar>
-          <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
-          <div className="flex items-center mb-2">
-            <Zap className="w-5 h-5 text-yellow-500 mr-1" />
-            <span className="text-sm font-semibold">{profile.wins} Wins</span>
-          </div>
-          <p className="text-center mb-4">{profile.bio}</p>
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {profile.techInterests.map((interest, index) => (
-              <Badge key={index} variant="secondary">
-                <Code className="w-3 h-3 mr-1" />
-                {interest}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {profile.nonTechInterests.map((interest, index) => (
-              <Badge key={index} variant="outline">
-                {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
-                {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
-                {index === 2 && <ChevronRight className="w-3 h-3 mr-1" />}
-                {interest}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex justify-between w-full mt-4">
-            <Button variant="destructive" size="icon" onClick={() => handleSwipe('left')}>
-              <X className="h-4 w-4" />
-            </Button>
-            <Button variant="default" size="icon" onClick={() => handleSwipe('right')}>
-              <Check className="h-4 w-4" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Card className="w-full max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            <ProfileContent profile={profile} />
+          </Card>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <ProfileContent profile={profile} />
+        </DialogContent>
+      </Dialog>
+      <div className="flex justify-between w-full max-w-md mt-4">
+        <Button variant="destructive" size="icon" onClick={() => handleSwipe('left')}>
+          <X className="h-4 w-4" />
+        </Button>
+        <Button variant="default" size="icon" onClick={() => handleSwipe('right')}>
+          <Check className="h-4 w-4" />
+        </Button>
+      </div>
       <div className="mt-4 flex justify-between w-full max-w-md">
         <Button variant="outline" size="sm">
           <ChevronLeft className="mr-2 h-4 w-4" /> Previous Hackathon
