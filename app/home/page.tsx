@@ -64,11 +64,11 @@ export default function SwipeScreen() {
   const profile = mockProfiles[currentProfile]
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Card className="w-full max-w-md overflow-hidden">
-        <div className={`h-48 ${profile.color}`} />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+      <Card className="w-full max-w-md  border-2 border-gray-400 overflow-hidden">
+        <div className={`h-40 ${profile.color}`} />
         <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
-          <Avatar className="w-32 h-32 border-4 border-white mb-4">
+          <Avatar className="w-32 h-32 border-2 border-black mb-4">
             <AvatarImage src={profile.image} alt={profile.name} />
             <AvatarFallback>{profile.name[0]}</AvatarFallback>
           </Avatar>
@@ -100,20 +100,25 @@ export default function SwipeScreen() {
             <Button variant="destructive" size="icon" onClick={() => handleSwipe('left')}>
               <X className="h-4 w-4" />
             </Button>
-            <Button variant="default" size="icon" onClick={() => handleSwipe('right')}>
-              <Check className="h-4 w-4" />
+            <Button 
+            variant="default" 
+            size="icon" 
+            onClick={() => handleSwipe('right')}
+            className="bg-green-500 hover:bg-green-600"
+            >
+            <Check className="h-4 w-4 text-white" />
             </Button>
           </div>
         </CardContent>
       </Card>
-      <div className="mt-4 flex justify-between w-full max-w-md">
+      {/*<div className="mt-4 flex justify-between w-full max-w-md">
         <Button variant="outline" size="sm">
           <ChevronLeft className="mr-2 h-4 w-4" /> Previous Hackathon
         </Button>
         <Button variant="outline" size="sm">
           Next Hackathon <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
-      </div>
+      </div>*/}
     </div>
   )
 }
