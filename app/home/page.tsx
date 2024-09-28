@@ -196,7 +196,7 @@ All content must be specific and hyper relevant to the matching and non matching
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
-      <Card className="w-full max-w-md  border-2 border-gray-400 overflow-hidden">
+      {/* <Card className="w-full max-w-md  border-2 border-gray-400 overflow-hidden">
         <div className={`h-40 ${profile.color}`} />
         <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
           <Avatar className="w-32 h-32 border-2 border-black mb-4">
@@ -241,10 +241,8 @@ All content must be specific and hyper relevant to the matching and non matching
             </Button>
           </div>
         </CardContent>
-      </Card>
-      {/*<div className="mt-4 flex justify-between w-full max-w-md">
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Dialog>
+      </Card> */}
+  <Dialog>
         <DialogTrigger asChild>
           <Card className="w-full max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContent profile={profile} />
@@ -269,7 +267,7 @@ All content must be specific and hyper relevant to the matching and non matching
         <Button variant="outline" size="sm">
           Next Hackathon <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
-      </div>*/}
+      </div>
     </div>
   )
 }
