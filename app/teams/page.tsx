@@ -81,7 +81,7 @@ export default function DiscoTeams() {
   }
 
   return (
-    <div className={`min-h-screen p-4 transition-colors duration-500 ${discoColors[currentColorIndex]}`}>
+    <div className={`min-h-screen p-4 `}>
       <h1 className="text-3xl font-bold mb-4 text-white text-center animate-pulse">Disco Teams</h1>
       <Select onValueChange={(value) => setSelectedHackathon(value)}>
         <SelectTrigger className="w-full mb-4 bg-white/20 text-white border-white/30">

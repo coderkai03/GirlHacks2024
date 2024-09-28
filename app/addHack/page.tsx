@@ -60,7 +60,7 @@ export default function DiscoHackathon() {
   }
 
   return (
-    <div className={`min-h-screen p-4 transition-colors duration-500 ${colorOptions[currentColorIndex].value}`}>
+    <div className={`min-h-screen p-4 `}>
       <h1 className="text-3xl font-bold mb-4 text-white text-center animate-pulse">Disco Hackathon</h1>
       <Input 
         type="search" 
