@@ -14,6 +14,19 @@ import { Code, Headphones, Gamepad, Zap, Music, Disc, ChevronRight, Star, Sparkl
 
 export default function DiscoProfileScreen() {
   const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email || '')
+      setEmailVerified(user.email_verified || false)
+      setName(user.name || '')
+      setNickname(user.nickname || '')
+      setPicture(user.picture || '')
+      setSub(user.sub || '')
+      setUpdatedAt(user.updated_at || '')
+      setOrgId(user.org_id || '')
+    }
+  }, [user])
   
   // User profile states
   const [email, setEmail] = useState(user?.email || '')
