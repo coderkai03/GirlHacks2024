@@ -13,12 +13,11 @@ export async function GET() {
 
   const client = new MongoClient(uri);
 
-  const db = client.db("sample_mflix");
+  const db = client.db("girlhacks");
 
     const movies = await db
-      .collection("movies")
+      .collection("users")
       .find({})
-      .sort({ metacritic: -1 })
       .limit(10)
       .toArray();
     
