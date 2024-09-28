@@ -192,13 +192,6 @@ All content must be specific and hyper relevant to the matching and non matching
         height={360}
         autoPlay
       />}
-
-      {/* <image
-        src={profile.videoUrl}
-        width={640}
-        height={360}
-        autoPlay
-      /> */}
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
         <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
           <AvatarImage src={profile.image} alt={profile.name} />
