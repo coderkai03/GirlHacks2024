@@ -82,6 +82,7 @@ const mockProfiles: Profile[] = [
 
 export default function SwipeScreen() {
   const { userData } = useUserData();
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false)
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState({
     compatibility_score: "?",
@@ -121,6 +122,8 @@ export default function SwipeScreen() {
   );
 
   async function generate_suggestions(profile: Profile) {
+    if (isResponseGenerating) return
+    setIsResponseGenerating(true)
     setResponse({
       compatibility_score: "Loading... Please wait up to 5 seconds!",
       why_you_should_team_up: "Loading... Please wait up to 5 seconds!",
@@ -174,6 +177,7 @@ All content must be specific and hyper relevant to the matching and non matching
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
     // alert(JSON.stringify(resultObject));
+    setIsResponseGenerating(false)
   }
 
   useEffect(() => {
