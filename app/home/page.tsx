@@ -178,7 +178,12 @@ All content must be specific and hyper relevant to the matching and non matching
 
   const ProfileContentFront = ({ profile }: { profile: Profile }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
-      <div className={`h-48 ${profile.color}`} />
+      <video
+        src="https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"
+        width={640}
+        height={360}
+        autoPlay
+      />
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
         <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
           <AvatarImage src={profile.image} alt={profile.name} />
@@ -215,7 +220,6 @@ All content must be specific and hyper relevant to the matching and non matching
   const ProfileContentBack = ({ profile }: { profile: Profile }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
-        
         <Button className="m-4">Generate suggestions</Button>
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
