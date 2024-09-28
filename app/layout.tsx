@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { UserDataProvider } from "./UserDataContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body>{children}</body>
+        <UserDataProvider>
+          <body>{children}</body>
+        </UserDataProvider>
       </UserProvider>
     </html>
   );
