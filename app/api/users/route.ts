@@ -1,0 +1,84 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { MongoClient } from 'mongodb';
+
+const uri = process.env.MONGODB_URI;
+
+if (!uri) {
+  throw new Error('Please add your Mongo URI to .env.local')
+}
+
+export async function POST(request: NextRequest) {
+  console.log('POST request received');
+
+  const uri = process.env.MONGODB_URI || "";
+  console.log('MongoDB URI:', uri);
+
+  try {
+    const userData = await request.json();
+    console.log('Received user data:', userData);
+
+    const client = new MongoClient(uri);
+
+    console.log('Connecting to MongoDB...');
+    await client.connect();
+    console.log('Connected to MongoDB');
+
+    const db = client.db("girlhacks");
+    const collection = db.collection("users");
+
+    console.log('Updating user data...');
+    const result = await collection.updateOne(
+      { sub: userData.sub },
+      { $set: userData },
+      { upsert: true }
+    );
+    console.log('Update result:', result);
+
+    await client.close();
+    console.log('MongoDB connection closed');
+
+    return NextResponse.json({ 
+      message: 'User updated successfully', 
+      matchedCount: result.matchedCount,
+      modifiedCount: result.modifiedCount,
+      upsertedCount: result.upsertedCount
+    });
+  } catch (error) {
+    console.error('Error in POST request:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+// Keep the GET method for fetching users
+export async function GET() {
+  console.log('GET request received');
+
+  const uri = process.env.MONGODB_URI || "";
+  console.log('MongoDB URI:', uri);
+
+  const client = new MongoClient(uri);
+
+  try {
+    console.log('Connecting to MongoDB...');
+    await client.connect();
+    console.log('Connected to MongoDB');
+
+    const db = client.db("girlhacks");
+
+    console.log('Fetching users...');
+    const users = await db
+      .collection("users")
+      .find({})
+      .limit(10)
+      .toArray();
+    console.log('Fetched users:', users);
+
+    await client.close();
+    console.log('MongoDB connection closed');
+
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error('Error in GET request:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
