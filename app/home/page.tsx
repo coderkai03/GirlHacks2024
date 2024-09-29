@@ -121,6 +121,7 @@ export default function SwipeScreen() {
 
   const handleSwipe = (direction: "left" | "right") => {
     setIsFlipped(false)
+    setIsResponseGenerating(false)
     setResponse(defaultResponse)
     if (direction === "right") {
       console.log("Added to team:", mockProfiles[currentProfile].name);
@@ -151,6 +152,7 @@ export default function SwipeScreen() {
   );
 
   async function generate_suggestions(profile: UserData) {
+    console.log("generating suggestion");
     if (isResponseGenerating) return
     setIsResponseGenerating(true)
     setResponse({
@@ -198,15 +200,20 @@ Potential Teammate: ${JSON.stringify(profile)}
 }
 
 All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
+
+Reminder to not have a comma for the last element of a list.
       `;
+      console.log("before model")
     const result = await model.generateContent(prompt);
+    setIsResponseGenerating(false)
+    console.log("after model")
+
     const resultString = result.response.text();
     console.log(resultString);
     const cleanedString = cleanJsonString(resultString);
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
     // alert(JSON.stringify(resultObject));
-    setIsResponseGenerating(false)
   }
 
   useEffect(() => {
