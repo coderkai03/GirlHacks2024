@@ -100,7 +100,7 @@ export default function DiscoProfileScreen() {
           </div>
 
           <Tabs defaultValue="settings" className="text-white">
-            <TabsList className="grid w-full grid-cols-2 bg-purple-800">
+            <TabsList className="grid w-full grid-cols-3 bg-purple-800">
                 <TabsTrigger value="settings" className="data-[state=active]:bg-purple-600">Settings</TabsTrigger>
                 <TabsTrigger value="preview" className="data-[state=active]:bg-purple-600">Preview</TabsTrigger>
                 <TabsTrigger value="banner" className="data-[state=active]:bg-purple-600">Banner</TabsTrigger>
