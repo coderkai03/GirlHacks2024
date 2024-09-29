@@ -103,22 +103,24 @@ const old = [
   },
 ];
 
+const defaultResponse = {
+  compatibility_score: "?",
+  why_you_should_team_up: "...",
+  [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
+  [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
+  [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
+}
 export default function SwipeScreen() {
   const { userData, usersData } = useUserData();
   const [isResponseGenerating, setIsResponseGenerating] = useState(false)
   const [currentProfile, setCurrentProfile] = useState(0);
-  const [response, setResponse] = useState({
-    compatibility_score: "?",
-    why_you_should_team_up: "...",
-    [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
-    [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
-    [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
-  });
+  const [response, setResponse] = useState(defaultResponse);
   const mockProfiles = usersData;
 
 
   const handleSwipe = (direction: "left" | "right") => {
     setIsFlipped(false)
+    setResponse(defaultResponse)
     if (direction === "right") {
       console.log("Added to team:", mockProfiles[currentProfile].name);
     }
@@ -264,7 +266,9 @@ All content must be specific and hyper relevant to the matching and non matching
   );
 
   const ProfileContentBack = ({ profile }: { profile: UserData }) => (
-    <div onClick={() => setIsFlipped(!isFlipped)}>
+    <div onClick={() => {
+      setIsFlipped(!isFlipped)
+    }}>
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
         <Button className="m-4">Generate suggestions</Button>
         <div className="suggestion-category mb-4">
