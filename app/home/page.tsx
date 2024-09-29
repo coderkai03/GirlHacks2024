@@ -118,6 +118,7 @@ export default function SwipeScreen() {
 
 
   const handleSwipe = (direction: "left" | "right") => {
+    setIsFlipped(false)
     if (direction === "right") {
       console.log("Added to team:", mockProfiles[currentProfile].name);
     }
