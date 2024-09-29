@@ -235,7 +235,6 @@ export default function ProfileSettings({ userData }: { userData: UserData }) {
             }
           }} type="submit" className="mt-4 bg-cyan-400 hover:bg-cyan-500 text-black font-bold">
             Save Changes
-            <Sparkles className="ml-2 w-4 h-4 animate-spin" />
           </Button>
         </div>
     )
