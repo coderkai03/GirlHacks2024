@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Login from "./login";
 import Logout from "./logout";
+import LandingPage from "./featurecard";
 
 enum Screens {
   Home = "Home",
@@ -96,7 +97,8 @@ export default function HomeScreen() {
       </div>
       <div className="flex items-center justify-center min-h-screen w-full">
   {!user ? (
-    <p className="text-center">Please log in to get started!</p>
+    <LandingPage />
+  
   ) : (
     <div className="flex flex-col w-full h-full">
       {currentScreen == Screens.Home && <SwipeScreen />}
