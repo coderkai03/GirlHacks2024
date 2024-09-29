@@ -329,12 +329,12 @@ Reminder to not have a comma for the last element of a list.
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-5">
       
       <div className="m-8 self-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded">
+              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4">
                 Hackathons
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
@@ -367,7 +367,7 @@ Reminder to not have a comma for the last element of a list.
           </Card>
         </div>
         <div key="back">
-          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className=" center h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentBack profile={profile} />
           </Card>
         </div>
