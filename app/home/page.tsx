@@ -425,7 +425,7 @@ All content must be specific and hyper relevant to the matching and non matching
           Team!
         </p>
         {team.map((teammate) => (
-          <Card key={teammate.id} className="center max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card key={teammate.sub} className="center max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentTeam profile={teammate} />
           </Card>
         ))}
