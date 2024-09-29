@@ -240,6 +240,7 @@ Reminder to not have a comma for the last element of a list.
         width={640}
         height={360}
         autoPlay
+        loop
       />
 
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
