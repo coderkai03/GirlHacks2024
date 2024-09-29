@@ -121,7 +121,6 @@ export default function SwipeScreen() {
 
   const handleSwipe = (direction: "left" | "right") => {
     setIsFlipped(false)
-    setIsResponseGenerating(false)
     setResponse(defaultResponse)
     if (direction === "right") {
       console.log("Added to team:", mockProfiles[currentProfile].name);
@@ -152,7 +151,6 @@ export default function SwipeScreen() {
   );
 
   async function generate_suggestions(profile: UserData) {
-    console.log("generating suggestion");
     if (isResponseGenerating) return
     setIsResponseGenerating(true)
     setResponse({
@@ -200,20 +198,15 @@ Potential Teammate: ${JSON.stringify(profile)}
 }
 
 All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
-
-Reminder to not have a comma for the last element of a list.
       `;
-      console.log("before model")
     const result = await model.generateContent(prompt);
-    setIsResponseGenerating(false)
-    console.log("after model")
-
     const resultString = result.response.text();
     console.log(resultString);
     const cleanedString = cleanJsonString(resultString);
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
     // alert(JSON.stringify(resultObject));
+    setIsResponseGenerating(false)
   }
 
   useEffect(() => {
@@ -240,7 +233,7 @@ Reminder to not have a comma for the last element of a list.
         autoPlay
       />
 
-      <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
+      <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
         <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
           <AvatarImage src={profile.picture} alt={profile.name} />
           <AvatarFallback>{profile.name[0]}</AvatarFallback>
@@ -285,7 +278,7 @@ Reminder to not have a comma for the last element of a list.
 
   const ProfileContentBack = ({ profile }: { profile: UserData }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
-      <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
+      <CardContent className="flex flex-col items-center p-6 relative h-full max-h-[75vh] overflow-y-auto">
         <Button className="m-4">Generate suggestions</Button>
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
@@ -365,7 +358,7 @@ Reminder to not have a comma for the last element of a list.
           </Card>
         </div>
         <div key="back">
-          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className="h-[75vh] max-w-md cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentBack profile={profile} />
           </Card>
         </div>
