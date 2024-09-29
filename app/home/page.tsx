@@ -130,7 +130,19 @@ export default function SwipeScreen() {
       console.log("Added to team:", usersData[currentProfile].name);
       setTeam((prev) => [...prev, usersData[currentProfile]]);
     }
-    setCurrentProfile((prev) => (prev + 1) % usersData.length);
+    setCurrentProfile((prev) => {
+      // Move to the next profile
+      let nextIndex = (prev + 1) % usersData.length;
+    
+      // Check if the next profile is your own (e.g., compare by userData.id or userData.name)
+      if (usersData[nextIndex].name === userData.name) {
+        // If it's your profile, skip to the profile after the next one
+        nextIndex = (nextIndex + 1) % usersData.length;
+      }
+    
+      return nextIndex;
+    });
+    
   };
 
   const profile = usersData[currentProfile];
