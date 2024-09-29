@@ -6,7 +6,8 @@ import SwipeScreen from "@/app/home/page";
 import Teams from "@/app/teams/page";
 import Profile from "@/app/profile/page";
 import AddHackathon from "@/app/addHack/page";
-import { Home, Users, User, PlusCircle } from "lucide-react";
+import HackathonDisplay from "./hackathons/page";
+import { Home, Users, User, PlusCircle, Computer } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -18,6 +19,7 @@ enum Screens {
   Teams = "Teams",
   Profile = "Profile",
   Add = "Add",
+  Hackathons = "Hackathons"
 }
 
 export default function HomeScreen() {
@@ -62,6 +64,15 @@ export default function HomeScreen() {
             </button>
 
             <button
+              title="Hackathons"
+              onClick={() => setCurrentScreen(Screens.Hackathons)}
+              className="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              <Computer className="h-6 w-6" />
+              <span className="sr-only">Hackathons</span>
+            </button>
+
+            <button
               title="Profile"
               onClick={() => setCurrentScreen(Screens.Profile)}
               className="text-gray-100 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium"
@@ -88,6 +99,7 @@ export default function HomeScreen() {
       {currentScreen == Screens.Teams && <Teams />}
       {currentScreen == Screens.Profile && <Profile />}
       {currentScreen == Screens.Add && <AddHackathon />}
+      {currentScreen == Screens.Hackathons && <HackathonDisplay />}
     </nav>
   );
 }
