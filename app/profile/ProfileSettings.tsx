@@ -7,11 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
 import { Code, Headphones, Gamepad, Zap, Music, Disc, ChevronRight, Star, Sparkles, Trophy } from 'lucide-react'
-import {UserProfile, useUserData} from '../UserDataContext'
+import {UserData, useUserData} from '../UserDataContext'
 import { useEffect } from "react"
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function ProfileSettings({ userData }: { userData: UserProfile }) {
+export default function ProfileSettings({ userData }: { userData: UserData }) {
     const { user: auth0User } = useAuth0();
     const { updateUserData } = useUserData();
 
@@ -221,7 +221,19 @@ export default function ProfileSettings({ userData }: { userData: UserProfile })
               </form>
             </TabsContent>
           </Tabs>
-          <Button type="submit" className="mt-4 bg-cyan-400 hover:bg-cyan-500 text-black font-bold">
+          <Button onClick={async () => {
+            const updatedData = userData;
+            const response = await fetch('/api/users', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(updatedData),
+            });
+            if (!response.ok) {
+              throw new Error('Failed to update user data');
+            }
+          }} type="submit" className="mt-4 bg-cyan-400 hover:bg-cyan-500 text-black font-bold">
             Save Changes
             <Sparkles className="ml-2 w-4 h-4 animate-spin" />
           </Button>

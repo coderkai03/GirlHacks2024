@@ -88,8 +88,8 @@ export default function DiscoProfileScreen() {
             </TabsContent>
         </Tabs>
         </div>
+        <Button onClick={() => alert(console.log(userData))}>User Data</Button>
       </div>
-      
       </div>
   )
 }

@@ -76,7 +76,7 @@ const mockProfiles: Profile[] = [
     techInterests: ["AI", "Machine Learning", "Python"],
     nonTechInterests: ["Coffee", "Hiking", "Photography"],
     color: "bg-purple-500",
-    videoUrl: "https://media.tenor.com/r0R0N3dI3kIAAAAM/dancing-cat-dance.gif"
+    videoUrl: "https://i.pinimg.com/originals/47/c0/89/47c0898a86c2360f696aafb5df2f24be.gif"
   },
   {
     id: "2",
