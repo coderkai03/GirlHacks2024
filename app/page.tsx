@@ -35,15 +35,15 @@ export default function HomeScreen() {
             {/* Logo */}
             <button
               onClick={() => setCurrentScreen(Screens.Home)}
-              className="text-2xl font-bold text-gray-800"
+              className="text-2xl font-bold text-white"
             >
-              Coder
+              DiscoMatch 🎶
             </button>
           </div>
           <div className="flex items-center">
             {/* Menu Icons */}
             {user && <img style={{height: 30, borderRadius: 50, marginRight: 10}} src={user.picture || ""} alt={user.name || ""} />}
-            {user && <p>  {user.name} ({user.email})</p>}
+            {user && <p className="text-gray-100">{user.name} ({user.email})</p>}
 
             <button
               title="Home"
