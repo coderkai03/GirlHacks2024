@@ -55,60 +55,6 @@ const genAI = new GoogleGenerativeAI(
 );
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-interface Profile {
-  id: string;
-  name: string;
-  wins: number;
-  bio: string;
-  image: string;
-  techInterests: string[];
-  nonTechInterests: string[];
-  color: string;
-  videoUrl: string;
-}
-
-const old = [
-  {
-    id: "1",
-    name: "Alice",
-    wins: 3,
-    bio: "AI enthusiast and coffee lover",
-    image:
-      "https://i.pinimg.com/736x/ab/d6/b7/abd6b72d71d74f36bca9258555bcaceb.jpg",
-    techInterests: ["AI", "Machine Learning", "Python"],
-    nonTechInterests: ["Coffee", "Hiking", "Photography"],
-    color: "bg-purple-500",
-    videoUrl:
-      "https://i.pinimg.com/originals/12/f6/ac/12f6accc21f3cad0047fc68fc282569c.gif",
-  },
-  {
-    id: "2",
-    name: "Bob",
-    wins: 2,
-    bio: "VR developer with a passion for gaming",
-    image:
-      "https://i.pinimg.com/736x/3c/13/b9/3c13b91579296ae376ece2e93ac212dd.jpg",
-    techInterests: ["VR", "Unity", "C#"],
-    nonTechInterests: ["Gaming", "Sci-Fi Movies", "Board Games"],
-    color: "bg-green-500",
-    videoUrl:
-      "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&",
-  },
-  {
-    id: "3",
-    name: "Charlie",
-    wins: 1,
-    bio: "Blockchain expert and music producer",
-    image:
-      "https://i.pinimg.com/564x/d4/da/21/d4da218e178a7218ccb9acbb31cb1168.jpg",
-    techInterests: ["Blockchain", "Solidity", "Web3"],
-    nonTechInterests: ["Music Production", "DJing", "Traveling"],
-    color: "bg-blue-500",
-    videoUrl:
-      "https://i.pinimg.com/originals/23/51/bc/2351bc65b2b5d75cef146b7edddf805b.gif",
-  },
-];
-
 const defaultResponse = {
   compatibility_score: "?",
   why_you_should_team_up: "...",
@@ -116,12 +62,27 @@ const defaultResponse = {
   [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
   [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
 };
+
 export default function SwipeScreen() {
   const { userData, usersData } = useUserData();
   const [isResponseGenerating, setIsResponseGenerating] = useState(false);
   const [team, setTeam] = useState<UserData[]>([]);
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState(defaultResponse);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [bgColor, setBgColor] = useState('bg-purple-400');
+
+  useEffect(() => {
+    const colors = ['bg-purple-400', 'bg-pink-400', 'bg-blue-400', 'bg-green-400', 'bg-yellow-400'];
+    let colorIndex = 0;
+
+    const intervalId = setInterval(() => {
+      colorIndex = (colorIndex + 1) % colors.length;
+      setBgColor(colors[colorIndex]);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleSwipe = (direction: "left" | "right") => {
     setIsFlipped(false);
@@ -131,18 +92,12 @@ export default function SwipeScreen() {
       setTeam((prev) => [...prev, usersData[currentProfile]]);
     }
     setCurrentProfile((prev) => {
-      // Move to the next profile
       let nextIndex = (prev + 1) % usersData.length;
-    
-      // Check if the next profile is your own (e.g., compare by userData.id or userData.name)
       if (usersData[nextIndex].name === userData.name) {
-        // If it's your profile, skip to the profile after the next one
         nextIndex = (nextIndex + 1) % usersData.length;
       }
-    
       return nextIndex;
     });
-    
   };
 
   const profile = usersData[currentProfile];
@@ -220,27 +175,12 @@ All content must be specific and hyper relevant to the matching and non matching
     const cleanedString = cleanJsonString(resultString);
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
-    // alert(JSON.stringify(resultObject));
     setIsResponseGenerating(false);
   }
-
-  // useEffect(() => {
-  //   // generate_suggestions(profile);
-  // }, [profile]);
 
   const ProfileContentTeam = ({ profile }: { profile: UserData }) =>
     profile && (
       <div>
-        {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
-      alt="this slowpoke moves"    
-           width="640"
-        height="360"/> : <video
-        src={profile.videoUrl}
-        width={640}
-        height={360}
-        autoPlay
-      />} */}
-
         <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
           <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
             <AvatarImage src={profile.picture} alt={profile.name} />
@@ -310,16 +250,6 @@ All content must be specific and hyper relevant to the matching and non matching
           generate_suggestions(profile);
         }}
       >
-        {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
-      alt="this slowpoke moves"    
-           width="640"
-        height="360"/> : <video
-        src={profile.videoUrl}
-        width={640}
-        height={360}
-        autoPlay
-      />} */}
-
         <video
           src={
             profile.videoUrl ||
@@ -414,29 +344,27 @@ All content must be specific and hyper relevant to the matching and non matching
           {renderList(response[AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS])}
         </div>
 
-        {/* <div className="suggestion-category mb-4">
-          <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
-            Suggested Conversation Topics
-          </h3>
-          {renderList(response[AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS])}
-        </div> */}
-
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
             Recommended Projects
           </h3>
           {renderList(response[AI_SUGGESTIONS.RECOMMENDED_PROJECTS])}
         </div>
-        {/* {JSON.stringify(response)} */}
       </CardContent>
     </div>
   );
 
-  const [isFlipped, setIsFlipped] = useState(false);
-
   return (
-    <div className="flex display-flex flex-row relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-5">
-      <div className="ml-8 self-start">
+    <div className={`flex display-flex flex-row relative min-h-screen ${bgColor} transition-colors duration-1000 p-5`}>
+      {/* Background icons */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <Music className="absolute text-white opacity-10 animate-pulse" style={{ top: '10%', left: '5%', width: '100px', height: '100px' }} />
+        <Headphones className="absolute text-white opacity-10 animate-pulse" style={{ top: '30%', right: '10%', width: '120px', height: '120px' }} />
+        <Gamepad className="absolute text-white opacity-10 animate-pulse" style={{ bottom: '15%', left: '15%', width: '80px', height: '80px' }} />
+        <Music className="absolute text-white opacity-10 animate-pulse" style={{ bottom: '25%', right: '20%', width: '90px', height: '90px' }} />
+      </div>
+
+      <div className="ml-8 self-start z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -457,7 +385,7 @@ All content must be specific and hyper relevant to the matching and non matching
         </DropdownMenu>
       </div>
 
-      <div className="flex items-center justify-center flex-grow">
+      <div className="flex items-center justify-center flex-grow z-10">
         <div className="flex flex-row items-center">
           <Button
             className="mr-8"
@@ -492,12 +420,12 @@ All content must be specific and hyper relevant to the matching and non matching
         </div>
       </div>
 
-      <div className="">
+      <div className="z-10">
         <p className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4">
           Team!
         </p>
         {team.map((teammate) => (
-          <Card className="center max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card key={teammate.id} className="center max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentTeam profile={teammate} />
           </Card>
         ))}
