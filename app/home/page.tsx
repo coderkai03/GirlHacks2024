@@ -121,7 +121,6 @@ export default function SwipeScreen() {
 
   const handleSwipe = (direction: "left" | "right") => {
     setIsFlipped(false)
-    setIsResponseGenerating(false)
     setResponse(defaultResponse)
     if (direction === "right") {
       console.log("Added to team:", mockProfiles[currentProfile].name);
@@ -152,7 +151,6 @@ export default function SwipeScreen() {
   );
 
   async function generate_suggestions(profile: UserData) {
-    console.log("generating suggestion");
     if (isResponseGenerating) return
     setIsResponseGenerating(true)
     setResponse({
@@ -198,20 +196,15 @@ Potential Teammate: ${JSON.stringify(profile)}
 }
 
 All content must be specific and hyper relevant to the matching and non matching interests! Do not have anything in brackets.
-
-Reminder to not have a comma for the last element of a list.
       `;
-      console.log("before model")
     const result = await model.generateContent(prompt);
-    setIsResponseGenerating(false)
-    console.log("after model")
-
     const resultString = result.response.text();
     console.log(resultString);
     const cleanedString = cleanJsonString(resultString);
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
     // alert(JSON.stringify(resultObject));
+    setIsResponseGenerating(false)
   }
 
   // useEffect(() => {
@@ -243,7 +236,7 @@ Reminder to not have a comma for the last element of a list.
         loop
       />
 
-      <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
+      <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
         <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
           <AvatarImage src={profile.picture} alt={profile.name} />
           <AvatarFallback>{profile.name[0]}</AvatarFallback>
@@ -329,12 +322,12 @@ Reminder to not have a comma for the last element of a list.
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-5">
       
       <div className="m-8 self-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded">
+              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4">
                 Hackathons
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
@@ -367,7 +360,7 @@ Reminder to not have a comma for the last element of a list.
           </Card>
         </div>
         <div key="back">
-          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className=" center h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentBack profile={profile} />
           </Card>
         </div>
