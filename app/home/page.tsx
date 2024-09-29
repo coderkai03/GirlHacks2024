@@ -44,7 +44,7 @@ import { ChevronDown } from "lucide-react"
     "HackDuke"
   ]
 
-export enum AI_SUGGESTIONS {
+enum AI_SUGGESTIONS {
   ICE_BREAKER_QUESTIONS = "ice_breaker_questions",
   RECOMMENDED_PROJECTS = "recommended_projects",
   SUGGESTED_CONVERSATION_TOPICS = "suggested_conversation_topics",
@@ -162,13 +162,11 @@ export default function SwipeScreen() {
     });
     const prompt = `
       Prompt:
-You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${
+You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (current user: ${
       userData.name
-    } and ${
+    } and potential team mate ${
       profile.name
-    }), their interests, and personalities, generate a JSON output with the following information for ${
-      userData.name
-    } to ask ${profile.name}:
+    }), their interests, and personalities, generate a JSON output with the following information:
 Compatibility Score: a numeric score out of 100 of how compatibility the two hackers are in a team. Try to keep the range within 70-90.
 Why you should team up: Tell ${userData.name} how ${
       profile.name
@@ -209,12 +207,16 @@ All content must be specific and hyper relevant to the matching and non matching
     setIsResponseGenerating(false)
   }
 
-  useEffect(() => {
-    generate_suggestions(profile);
-  }, [profile]);
+  // useEffect(() => {
+  //   // generate_suggestions(profile);
+  // }, [profile]);
 
   const ProfileContentFront = ({ profile }: { profile: UserData }) => profile && (
-    <div onClick={() => setIsFlipped(!isFlipped)}>
+    <div onClick={() => {
+      setIsFlipped(!isFlipped)
+      generate_suggestions(profile);
+    }
+    }>
       
       {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
       alt="this slowpoke moves"    
@@ -227,10 +229,11 @@ All content must be specific and hyper relevant to the matching and non matching
       />} */}
 
       <video
-        src={"https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"}
+        src={profile.videoUrl || "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"}
         width={640}
         height={360}
         autoPlay
+        loop
       />
 
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
@@ -279,7 +282,6 @@ All content must be specific and hyper relevant to the matching and non matching
   const ProfileContentBack = ({ profile }: { profile: UserData }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
       <CardContent className="flex flex-col items-center p-6 relative h-full max-h-[75vh] overflow-y-auto">
-        <Button className="m-4">Generate suggestions</Button>
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
             Compatibility Score
@@ -320,12 +322,12 @@ All content must be specific and hyper relevant to the matching and non matching
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-5">
       
       <div className="m-8 self-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded">
+              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4">
                 Hackathons
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
@@ -358,7 +360,7 @@ All content must be specific and hyper relevant to the matching and non matching
           </Card>
         </div>
         <div key="back">
-          <Card className="h-[75vh] max-w-md cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className=" center h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentBack profile={profile} />
           </Card>
         </div>

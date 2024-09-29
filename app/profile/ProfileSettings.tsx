@@ -61,6 +61,15 @@ export default function ProfileSettings({ userData }: { userData: UserData }) {
                   />
                 </div>
                 <div>
+                  <Label htmlFor="videoUrl" className="text-white">Video URL</Label>
+                  <Input 
+                    id="videoUrl" 
+                    value={userData.videoUrl} 
+                    onChange={(e) => handleInputChange('videoUrl', e.target.value)}
+                    className="bg-purple-900 text-white placeholder-purple-300 border-purple-600" 
+                  />
+                </div>
+                <div>
                   <Label htmlFor="email" className="text-white">Email</Label>
                   <Input 
                     id="email" 
@@ -121,6 +130,7 @@ export default function ProfileSettings({ userData }: { userData: UserData }) {
                     <Input 
                       id="hackathons" 
                       type="number" 
+                      min="0"
                       value={userData.hackathons} 
                       onChange={(e) => handleInputChange('hackathons', e.target.value)}
                       placeholder="Participated" 
@@ -132,6 +142,7 @@ export default function ProfileSettings({ userData }: { userData: UserData }) {
                     <Input 
                       id="wins" 
                       type="number" 
+                      min="0"
                       value={userData.wins} 
                       onChange={(e) => handleInputChange('wins', e.target.value)}
                       placeholder="Number of wins" 
