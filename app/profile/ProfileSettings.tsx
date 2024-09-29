@@ -130,6 +130,7 @@ export default function ProfileSettings({ userData }: { userData: UserData }) {
                     <Input 
                       id="hackathons" 
                       type="number" 
+                      min="0"
                       value={userData.hackathons} 
                       onChange={(e) => handleInputChange('hackathons', e.target.value)}
                       placeholder="Participated" 
@@ -141,6 +142,7 @@ export default function ProfileSettings({ userData }: { userData: UserData }) {
                     <Input 
                       id="wins" 
                       type="number" 
+                      min="0"
                       value={userData.wins} 
                       onChange={(e) => handleInputChange('wins', e.target.value)}
                       placeholder="Number of wins" 
