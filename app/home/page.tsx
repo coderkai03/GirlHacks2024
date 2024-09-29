@@ -126,7 +126,7 @@ export default function SwipeScreen() {
   const handleSwipe = (direction: "left" | "right") => {
     setIsFlipped(false);
     setResponse(defaultResponse);
-    if (direction === "right") {
+    if (direction === "right" && team.length < 3) {
       console.log("Added to team:", usersData[currentProfile].name);
       setTeam((prev) => [...prev, usersData[currentProfile]]);
     }
