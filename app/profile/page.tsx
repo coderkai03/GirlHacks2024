@@ -13,10 +13,23 @@ import { Code, Headphones, Gamepad, Zap, Music, Disc, ChevronRight, Star, Sparkl
 import {useUserData} from '../UserDataContext'
 import ProfilePreview from './ProfilePreview'
 import ProfileSettings from './ProfileSettings'
+import { useRef } from 'react'
 
 export default function DiscoProfileScreen() {
   const { user: auth0User } = useUser();
   const { userData, updateUserData } = useUserData();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateUserData({ picture: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     if (auth0User) {
@@ -53,6 +66,10 @@ export default function DiscoProfileScreen() {
     return () => clearInterval(interval)
   }, [updateUserData])
 
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return userData && <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-4">
       <h1 className="text-3xl font-bold mb-4 text-white text-center">Your Groovy Profile</h1>
       <div className="bg-black rounded-lg shadow-2xl overflow-hidden border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${glowColor}` }}>
@@ -68,7 +85,14 @@ export default function DiscoProfileScreen() {
               <AvatarImage src={userData.picture || "/placeholder.svg?height=128&width=128"} alt="Profile picture" />
               <AvatarFallback>{userData.nickname ? userData.nickname.substring(0, 2).toUpperCase() : 'JD'}</AvatarFallback>
             </Avatar>
-            <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handlePictureChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <Button onClick={triggerFileInput} className="bg-pink-500 hover:bg-pink-600 text-white">
               Change Picture
               <Sparkles className="ml-2 w-4 h-4 animate-spin" />
             </Button>

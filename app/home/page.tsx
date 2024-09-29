@@ -1,7 +1,7 @@
 "use client";
 import ReactCardFlip from "react-card-flip";
 
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,6 +11,7 @@ import {
   Code,
   Headphones,
   Gamepad,
+  Music,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -103,21 +104,24 @@ const old = [
   },
 ];
 
+const defaultResponse = {
+  compatibility_score: "?",
+  why_you_should_team_up: "...",
+  [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
+  [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
+  [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
+}
 export default function SwipeScreen() {
   const { userData, usersData } = useUserData();
   const [isResponseGenerating, setIsResponseGenerating] = useState(false)
   const [currentProfile, setCurrentProfile] = useState(0);
-  const [response, setResponse] = useState({
-    compatibility_score: "?",
-    why_you_should_team_up: "...",
-    [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
-    [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
-    [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
-  });
+  const [response, setResponse] = useState(defaultResponse);
   const mockProfiles = usersData;
 
 
   const handleSwipe = (direction: "left" | "right") => {
+    setIsFlipped(false)
+    setResponse(defaultResponse)
     if (direction === "right") {
       console.log("Added to team:", mockProfiles[currentProfile].name);
     }
@@ -240,6 +244,16 @@ All content must be specific and hyper relevant to the matching and non matching
           <span className="text-sm font-semibold">{profile.wins} Wins</span>
         </div>
         <p className="text-center mb-4">{profile.bio}</p>
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.technologies.split(',').map((interest: string, index: Key | null | undefined) => (
+              <Badge key={index} variant="outline" className="border-pink-500 text-pink-500">
+                {index === 0 && <Music className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '3s' }} />}
+                {index === 1 && <Headphones className="w-3 h-3 mr-1 animate-pulse" />}
+                {index === 2 && <Gamepad className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '4s' }} />}
+                {interest.trim()}
+              </Badge>
+            ))}
+          </div>
         <div className="flex flex-wrap justify-center gap-2 mb-4">
           {profile.techInterests.split(",").map((interest, index) => (
             <Badge key={index} variant="secondary">
