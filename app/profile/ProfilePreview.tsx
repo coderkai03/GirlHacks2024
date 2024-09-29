@@ -4,9 +4,9 @@ import { Key, useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Code, Headphones, Gamepad, Zap, Music, Disc, ChevronRight, Star, Sparkles, Trophy } from 'lucide-react'
-import { UserProfile } from '@/app/UserDataContext'
+import { UserData } from '@/app/UserDataContext'
 
-export default function ProfilePreview({ userData, glowColor }: { userData: UserProfile, glowColor: string }) {
+export default function ProfilePreview({ userData, glowColor }: { userData: UserData, glowColor: string }) {
     return (
         <div className="mt-8 bg-black rounded-lg shadow-2xl p-6 border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${glowColor}` }}>
         <h2 className="text-2xl font-semibold mb-4 text-white text-center">Profile Preview</h2>

@@ -17,6 +17,9 @@ export async function POST(request: NextRequest) {
     const userData = await request.json();
     console.log('Received user data:', userData);
 
+
+    delete userData['_id'];
+
     const client = new MongoClient(uri);
 
     console.log('Connecting to MongoDB...');
