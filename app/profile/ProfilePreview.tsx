@@ -22,6 +22,16 @@ export default function ProfilePreview({ userData, glowColor }: { userData: User
           </div>
           <p className="text-center text-gray-300 mb-4">{userData.bio || 'AI enthusiast and disco dancer extraordinaire'}</p>
           <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {userData.technologies.split(',').map((interest: string, index: Key | null | undefined) => (
+              <Badge key={index} variant="outline" className="border-pink-500 text-pink-500">
+                {index === 0 && <Music className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '3s' }} />}
+                {index === 1 && <Headphones className="w-3 h-3 mr-1 animate-pulse" />}
+                {index === 2 && <Gamepad className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '4s' }} />}
+                {interest.trim()}
+              </Badge>
+            ))}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
             {userData.techInterests.split(',').map((interest: string, index: Key | null | undefined) => (
               <Badge key={index} variant="secondary" className="bg-purple-600 text-white">
                 <Code className="w-3 h-3 mr-1 animate-pulse" />
