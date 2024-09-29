@@ -94,13 +94,21 @@ export default function HomeScreen() {
           </div>
         </div>
       </div>
-
-      {!user && <p>Please log in to get started!</p>}
+      <div className="flex items-center justify-center min-h-screen w-full">
+  {!user ? (
+    <p className="text-center">Please log in to get started!</p>
+  ) : (
+    <div className="flex flex-col w-full h-full">
       {currentScreen == Screens.Home && <SwipeScreen />}
       {currentScreen == Screens.Teams && <Teams />}
       {currentScreen == Screens.Profile && <Profile />}
       {currentScreen == Screens.Add && <AddHackathon />}
       {currentScreen == Screens.Hackathons && <HackathonDisplay />}
+    </div>
+  )}
+</div>
+
+
     </nav>
   );
 }
