@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "DiscoMatch",
+  title: "AlgoRhythm",
   description: "Find YOUR perfect hackathon team powered by AI!",
 };
 
