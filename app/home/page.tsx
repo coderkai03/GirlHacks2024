@@ -28,21 +28,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
-  const hackathons = [
-    "TechCrunch Disrupt",
-    "HackMIT",
-    "PennApps",
-    "TreeHacks",
-    "HackTheNorth",
-    "MHacks",
-    "HackGT",
-    "CalHacks",
-    "LAHacks",
-    "HackDuke"
-  ]
+const hackathons = [
+  "TechCrunch Disrupt",
+  "HackMIT",
+  "PennApps",
+  "TreeHacks",
+  "HackTheNorth",
+  "MHacks",
+  "HackGT",
+  "CalHacks",
+  "LAHacks",
+  "HackDuke",
+];
 
 enum AI_SUGGESTIONS {
   ICE_BREAKER_QUESTIONS = "ice_breaker_questions",
@@ -67,40 +67,45 @@ interface Profile {
   videoUrl: string;
 }
 
-
 const old = [
   {
     id: "1",
     name: "Alice",
     wins: 3,
     bio: "AI enthusiast and coffee lover",
-    image: "https://i.pinimg.com/736x/ab/d6/b7/abd6b72d71d74f36bca9258555bcaceb.jpg",
+    image:
+      "https://i.pinimg.com/736x/ab/d6/b7/abd6b72d71d74f36bca9258555bcaceb.jpg",
     techInterests: ["AI", "Machine Learning", "Python"],
     nonTechInterests: ["Coffee", "Hiking", "Photography"],
     color: "bg-purple-500",
-    videoUrl: "https://i.pinimg.com/originals/12/f6/ac/12f6accc21f3cad0047fc68fc282569c.gif"
+    videoUrl:
+      "https://i.pinimg.com/originals/12/f6/ac/12f6accc21f3cad0047fc68fc282569c.gif",
   },
   {
     id: "2",
     name: "Bob",
     wins: 2,
     bio: "VR developer with a passion for gaming",
-    image: "https://i.pinimg.com/736x/3c/13/b9/3c13b91579296ae376ece2e93ac212dd.jpg",
+    image:
+      "https://i.pinimg.com/736x/3c/13/b9/3c13b91579296ae376ece2e93ac212dd.jpg",
     techInterests: ["VR", "Unity", "C#"],
     nonTechInterests: ["Gaming", "Sci-Fi Movies", "Board Games"],
     color: "bg-green-500",
-    videoUrl: "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"
+    videoUrl:
+      "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&",
   },
   {
     id: "3",
     name: "Charlie",
     wins: 1,
     bio: "Blockchain expert and music producer",
-    image: "https://i.pinimg.com/564x/d4/da/21/d4da218e178a7218ccb9acbb31cb1168.jpg",
+    image:
+      "https://i.pinimg.com/564x/d4/da/21/d4da218e178a7218ccb9acbb31cb1168.jpg",
     techInterests: ["Blockchain", "Solidity", "Web3"],
     nonTechInterests: ["Music Production", "DJing", "Traveling"],
     color: "bg-blue-500",
-    videoUrl: "https://i.pinimg.com/originals/23/51/bc/2351bc65b2b5d75cef146b7edddf805b.gif"
+    videoUrl:
+      "https://i.pinimg.com/originals/23/51/bc/2351bc65b2b5d75cef146b7edddf805b.gif",
   },
 ];
 
@@ -110,25 +115,25 @@ const defaultResponse = {
   [AI_SUGGESTIONS.ICE_BREAKER_QUESTIONS]: [],
   [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
   [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
-}
+};
 export default function SwipeScreen() {
   const { userData, usersData } = useUserData();
-  const [isResponseGenerating, setIsResponseGenerating] = useState(false)
+  const [isResponseGenerating, setIsResponseGenerating] = useState(false);
+  const [team, setTeam] = useState<UserData[]>([]);
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState(defaultResponse);
-  const mockProfiles = usersData;
-
 
   const handleSwipe = (direction: "left" | "right") => {
-    setIsFlipped(false)
-    setResponse(defaultResponse)
+    setIsFlipped(false);
+    setResponse(defaultResponse);
     if (direction === "right") {
-      console.log("Added to team:", mockProfiles[currentProfile].name);
+      console.log("Added to team:", usersData[currentProfile].name);
+      setTeam((prev) => [...prev, usersData[currentProfile]]);
     }
-    setCurrentProfile((prev) => (prev + 1) % mockProfiles.length);
+    setCurrentProfile((prev) => (prev + 1) % usersData.length);
   };
 
-  const profile = mockProfiles[currentProfile];
+  const profile = usersData[currentProfile];
 
   const renderList = (
     items: string[],
@@ -151,8 +156,8 @@ export default function SwipeScreen() {
   );
 
   async function generate_suggestions(profile: UserData) {
-    if (isResponseGenerating) return
-    setIsResponseGenerating(true)
+    if (isResponseGenerating) return;
+    setIsResponseGenerating(true);
     setResponse({
       compatibility_score: "Loading... Please wait up to 5 seconds!",
       why_you_should_team_up: "Loading... Please wait up to 5 seconds!",
@@ -204,21 +209,17 @@ All content must be specific and hyper relevant to the matching and non matching
     const resultObject = JSON.parse(cleanedString);
     setResponse(resultObject);
     // alert(JSON.stringify(resultObject));
-    setIsResponseGenerating(false)
+    setIsResponseGenerating(false);
   }
 
   // useEffect(() => {
   //   // generate_suggestions(profile);
   // }, [profile]);
 
-  const ProfileContentFront = ({ profile }: { profile: UserData }) => profile && (
-    <div onClick={() => {
-      setIsFlipped(!isFlipped)
-      generate_suggestions(profile);
-    }
-    }>
-      
-      {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
+  const ProfileContentTeam = ({ profile }: { profile: UserData }) =>
+    profile && (
+      <div>
+        {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
       alt="this slowpoke moves"    
            width="640"
         height="360"/> : <video
@@ -228,56 +229,156 @@ All content must be specific and hyper relevant to the matching and non matching
         autoPlay
       />} */}
 
-      <video
-        src={profile.videoUrl || "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"}
-        width={640}
-        height={360}
-        autoPlay
-        loop
-      />
-
-      <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
-        <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
-          <AvatarImage src={profile.picture} alt={profile.name} />
-          <AvatarFallback>{profile.name[0]}</AvatarFallback>
-        </Avatar>
-        <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
-        <div className="flex items-center mb-2">
-          <Zap className="w-5 h-5 text-yellow-500 mr-1" />
-          <span className="text-sm font-semibold">{profile.wins} Wins</span>
-        </div>
-        <p className="text-center mb-4">{profile.bio}</p>
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {profile.technologies.split(',').map((interest: string, index: Key | null | undefined) => (
-              <Badge key={index} variant="outline" className="border-pink-500 text-pink-500">
-                {index === 0 && <Music className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '3s' }} />}
-                {index === 1 && <Headphones className="w-3 h-3 mr-1 animate-pulse" />}
-                {index === 2 && <Gamepad className="w-3 h-3 mr-1 animate-spin" style={{ animationDuration: '4s' }} />}
-                {interest.trim()}
+        <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
+          <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
+            <AvatarImage src={profile.picture} alt={profile.name} />
+            <AvatarFallback>{profile.name[0]}</AvatarFallback>
+          </Avatar>
+          <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
+          <div className="flex items-center mb-2">
+            <Zap className="w-5 h-5 text-yellow-500 mr-1" />
+            <span className="text-sm font-semibold">{profile.wins} Wins</span>
+          </div>
+          <p className="text-center mb-4">{profile.bio}</p>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.technologies
+              .split(",")
+              .map((interest: string, index: Key | null | undefined) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="border-pink-500 text-pink-500"
+                >
+                  {index === 0 && (
+                    <Music
+                      className="w-3 h-3 mr-1 animate-spin"
+                      style={{ animationDuration: "3s" }}
+                    />
+                  )}
+                  {index === 1 && (
+                    <Headphones className="w-3 h-3 mr-1 animate-pulse" />
+                  )}
+                  {index === 2 && (
+                    <Gamepad
+                      className="w-3 h-3 mr-1 animate-spin"
+                      style={{ animationDuration: "4s" }}
+                    />
+                  )}
+                  {interest.trim()}
+                </Badge>
+              ))}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.techInterests.split(",").map((interest, index) => (
+              <Badge key={index} variant="secondary">
+                <Code className="w-3 h-3 mr-1" />
+                {interest}
               </Badge>
             ))}
           </div>
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
-          {profile.techInterests.split(",").map((interest, index) => (
-            <Badge key={index} variant="secondary">
-              <Code className="w-3 h-3 mr-1" />
-              {interest}
-            </Badge>
-          ))}
-        </div>
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
-          {profile.nonTechInterests.split(",").map((interest, index) => (
-            <Badge key={index} variant="outline">
-              {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
-              {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
-              {index === 2 && <ChevronRight className="w-3 h-3 mr-1" />}
-              {interest}
-            </Badge>
-          ))}
-        </div>
-      </CardContent>
-    </div>
-  );
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.nonTechInterests.split(",").map((interest, index) => (
+              <Badge key={index} variant="outline">
+                {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
+                {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
+                {index === 2 && <ChevronRight className="w-3 h-3 mr-1" />}
+                {interest}
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </div>
+    );
+
+  const ProfileContentFront = ({ profile }: { profile: UserData }) =>
+    profile && (
+      <div
+        onClick={() => {
+          setIsFlipped(!isFlipped);
+          generate_suggestions(profile);
+        }}
+      >
+        {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
+      alt="this slowpoke moves"    
+           width="640"
+        height="360"/> : <video
+        src={profile.videoUrl}
+        width={640}
+        height={360}
+        autoPlay
+      />} */}
+
+        <video
+          src={
+            profile.videoUrl ||
+            "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"
+          }
+          width={640}
+          height={360}
+          autoPlay
+          loop
+        />
+
+        <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
+          <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
+            <AvatarImage src={profile.picture} alt={profile.name} />
+            <AvatarFallback>{profile.name[0]}</AvatarFallback>
+          </Avatar>
+          <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
+          <div className="flex items-center mb-2">
+            <Zap className="w-5 h-5 text-yellow-500 mr-1" />
+            <span className="text-sm font-semibold">{profile.wins} Wins</span>
+          </div>
+          <p className="text-center mb-4">{profile.bio}</p>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.technologies
+              .split(",")
+              .map((interest: string, index: Key | null | undefined) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="border-pink-500 text-pink-500"
+                >
+                  {index === 0 && (
+                    <Music
+                      className="w-3 h-3 mr-1 animate-spin"
+                      style={{ animationDuration: "3s" }}
+                    />
+                  )}
+                  {index === 1 && (
+                    <Headphones className="w-3 h-3 mr-1 animate-pulse" />
+                  )}
+                  {index === 2 && (
+                    <Gamepad
+                      className="w-3 h-3 mr-1 animate-spin"
+                      style={{ animationDuration: "4s" }}
+                    />
+                  )}
+                  {interest.trim()}
+                </Badge>
+              ))}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.techInterests.split(",").map((interest, index) => (
+              <Badge key={index} variant="secondary">
+                <Code className="w-3 h-3 mr-1" />
+                {interest}
+              </Badge>
+            ))}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {profile.nonTechInterests.split(",").map((interest, index) => (
+              <Badge key={index} variant="outline">
+                {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
+                {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
+                {index === 2 && <ChevronRight className="w-3 h-3 mr-1" />}
+                {interest}
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </div>
+    );
 
   const ProfileContentBack = ({ profile }: { profile: UserData }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
@@ -322,60 +423,73 @@ All content must be specific and hyper relevant to the matching and non matching
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-5">
-      
-      <div className="m-8 self-start">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4">
-                Hackathons
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 items-center border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-black rounded">
-              <DropdownMenuLabel>Select a Hackathon</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {hackathons.map((hackathon, index) => (
-                <DropdownMenuItem key={index}>{hackathon}</DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      
-        <div className="flex flex-grow items-center justify-center">
-    <div className="flex flex-row items-center">
-      <Button
-        className="mr-8"
-        variant="destructive"
-        size="icon"
-        onClick={() => handleSwipe("left")}
-      >
-        <X className="h-4 w-4" />
-      </Button>
+    <div className="flex display-flex flex-row relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-5">
+      <div className="ml-8 self-start">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4"
+            >
+              Hackathons
+              <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-40 items-center border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-black rounded">
+            <DropdownMenuLabel>Select a Hackathon</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {hackathons.map((hackathon, index) => (
+              <DropdownMenuItem key={index}>{hackathon}</DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
-      <ReactCardFlip isFlipped={isFlipped}>
-        <div key="front">
-          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
-            <ProfileContentFront profile={profile} />
-          </Card>
-        </div>
-        <div key="back">
-          <Card className=" center h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
-            <ProfileContentBack profile={profile} />
-          </Card>
-        </div>
-      </ReactCardFlip>
+      <div className="flex items-center justify-center flex-grow">
+        <div className="flex flex-row items-center">
+          <Button
+            className="mr-8"
+            variant="destructive"
+            size="icon"
+            onClick={() => handleSwipe("left")}
+          >
+            <X className="h-4 w-4" />
+          </Button>
 
-      <Button
-        variant="default"
-        size="icon"
-        onClick={() => handleSwipe("right")}
-        className="bg-green-500 hover:bg-green-600 ml-8"
-      >
-        <Check className="h-4 w-4" />
-      </Button>
-    </div>
-  </div>
+          <ReactCardFlip isFlipped={isFlipped}>
+            <div key="front">
+              <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+                <ProfileContentFront profile={profile} />
+              </Card>
+            </div>
+            <div key="back">
+              <Card className=" center h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+                <ProfileContentBack profile={profile} />
+              </Card>
+            </div>
+          </ReactCardFlip>
+
+          <Button
+            variant="default"
+            size="icon"
+            onClick={() => handleSwipe("right")}
+            className="bg-green-500 hover:bg-green-600 ml-8"
+          >
+            <Check className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div className="">
+        <p className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded p-4">
+          Team!
+        </p>
+        {team.map((teammate) => (
+          <Card className="center max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            <ProfileContentTeam profile={teammate} />
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
