@@ -35,7 +35,7 @@ export default function HomeScreen() {
               onClick={() => setCurrentScreen(Screens.Home)}
               className="text-2xl font-bold text-gray-800"
             >
-              Logo
+              Coder
             </button>
           </div>
           <div className="flex items-center">
