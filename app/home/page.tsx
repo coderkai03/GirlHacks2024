@@ -312,12 +312,12 @@ All content must be specific and hyper relevant to the matching and non matching
       <div className="m-8 self-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-40">
+              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded">
                 Hackathons
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 items-center">
+            <DropdownMenuContent className="w-40 items-center border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-black rounded">
               <DropdownMenuLabel>Select a Hackathon</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {hackathons.map((hackathon, index) => (
