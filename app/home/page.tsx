@@ -20,6 +20,28 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useUserData } from "../UserDataContext";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { cleanJsonString } from "../helpers";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ChevronDown } from "lucide-react"
+
+  const hackathons = [
+    "TechCrunch Disrupt",
+    "HackMIT",
+    "PennApps",
+    "TreeHacks",
+    "HackTheNorth",
+    "MHacks",
+    "HackGT",
+    "CalHacks",
+    "LAHacks",
+    "HackDuke"
+  ]
 
 export enum AI_SUGGESTIONS {
   ICE_BREAKER_QUESTIONS = "ice_breaker_questions",
@@ -273,97 +295,60 @@ All content must be specific and hyper relevant to the matching and non matching
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
-      {/* <Card className="w-full max-w-md  border-2 border-gray-400 overflow-hidden">
-        <div className={`h-40 ${profile.color}`} />
-        <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
-          <Avatar className="w-32 h-32 border-2 border-black mb-4">
-            <AvatarImage src={profile.image} alt={profile.name} />
-            <AvatarFallback>{profile.name[0]}</AvatarFallback>
-          </Avatar>
-          <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
-          <div className="flex items-center mb-2">
-            <Zap className="w-5 h-5 text-yellow-500 mr-1" />
-            <span className="text-sm font-semibold">{profile.wins} Wins</span>
-          </div>
-          <p className="text-center mb-4">{profile.bio}</p>
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {profile.techInterests.map((interest, index) => (
-              <Badge key={index} variant="secondary">
-                <Code className="w-3 h-3 mr-1" />
-                {interest}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {profile.nonTechInterests.map((interest, index) => (
-              <Badge key={index} variant="outline">
-                {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
-                {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
-                {index === 2 && <ChevronRight className="w-3 h-3 mr-1" />}
-                {interest}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex justify-between w-full mt-4">
-            <Button variant="destructive" size="icon" onClick={() => handleSwipe('left')}>
-              <X className="h-4 w-4" />
-            </Button>
-            <Button 
-            variant="default" 
-            size="icon" 
-            onClick={() => handleSwipe('right')}
-            className="bg-green-500 hover:bg-green-600"
-            >
-            <Check className="h-4 w-4 text-white" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card> */}
+    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+      
+      <div className="m-8 self-start">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-40">
+                Hackathons
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-40 items-center">
+              <DropdownMenuLabel>Select a Hackathon</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {hackathons.map((hackathon, index) => (
+                <DropdownMenuItem key={index}>{hackathon}</DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      
+        <div className="flex flex-grow items-center justify-center">
+    <div className="flex flex-row items-center">
+      <Button
+        className="mr-8"
+        variant="destructive"
+        size="icon"
+        onClick={() => handleSwipe("left")}
+      >
+        <X className="h-4 w-4" />
+      </Button>
+
       <ReactCardFlip isFlipped={isFlipped}>
         <div key="front">
-          <Card className="w-full max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentFront profile={profile} />
           </Card>
         </div>
-
         <div key="back">
-          <Card className="w-full max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
             <ProfileContentBack profile={profile} />
           </Card>
         </div>
       </ReactCardFlip>
-      <Dialog>
-        <DialogTrigger asChild></DialogTrigger>
-        {/* <DialogContent className="sm:max-w-[425px] max-h-[80vh] flex flex-col">
-          <ProfileContent profile={profile} />
-        </DialogContent> */}
-      </Dialog>
-      <div className="flex justify-between w-full max-w-md mt-4">
-        <Button
-          variant="destructive"
-          size="icon"
-          onClick={() => handleSwipe("left")}
-        >
-          <X className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="default"
-          size="icon"
-          onClick={() => handleSwipe("right")}
-          className="bg-green-500 hover:bg-green-600"
-        >
-          <Check className="h-4 w-4 " />
-        </Button>
-      </div>
-      <div className="mt-4 flex justify-between w-full max-w-md">
-        <Button variant="outline" size="sm">
-          <ChevronLeft className="mr-2 h-4 w-4" /> Previous Hackathon
-        </Button>
-        <Button variant="outline" size="sm">
-          Next Hackathon <ChevronRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
+
+      <Button
+        variant="default"
+        size="icon"
+        onClick={() => handleSwipe("right")}
+        className="bg-green-500 hover:bg-green-600 ml-8"
+      >
+        <Check className="h-4 w-4" />
+      </Button>
+    </div>
+  </div>
     </div>
   );
 }
