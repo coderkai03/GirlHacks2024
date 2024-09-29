@@ -53,8 +53,7 @@ export default function DiscoProfileScreen() {
     return () => clearInterval(interval)
   }, [updateUserData])
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-4">
+  return userData && <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-4">
       <h1 className="text-3xl font-bold mb-4 text-white text-center">Your Groovy Profile</h1>
       <div className="bg-black rounded-lg shadow-2xl overflow-hidden border-2 border-white" style={{ boxShadow: `0 0 20px 5px ${glowColor}` }}>
         <div className={`h-48 ${userData.profileColor} relative overflow-hidden`}>
@@ -91,5 +90,5 @@ export default function DiscoProfileScreen() {
         <Button onClick={() => alert(console.log(userData))}>User Data</Button>
       </div>
       </div>
-  )
+  
 }

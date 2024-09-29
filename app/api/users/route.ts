@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Keep the GET method for fetching users
-export async function GET() {
+export async function GET(request: NextRequest) {
   console.log('GET request received');
 
   const uri = process.env.MONGODB_URI || "";
@@ -67,13 +67,21 @@ export async function GET() {
     console.log('Connected to MongoDB');
 
     const db = client.db("girlhacks");
+    const collection = db.collection("users");
 
     console.log('Fetching users...');
-    const users = await db
-      .collection("users")
-      .find({})
-      .limit(10)
-      .toArray();
+    const { searchParams } = new URL(request.url);
+    const sub = searchParams.get('sub');
+
+    console.log('Fetching users...');
+    let users;
+    if (sub) {
+      // If 'sub' is provided, search for a specific user
+      users = await collection.find({ sub: sub }).limit(1).toArray();
+    } else {
+      // If no 'sub' is provided, fetch all users (limited to 10)
+      users = await collection.find({}).limit(10).toArray();
+    }
     console.log('Fetched users:', users);
 
     await client.close();
