@@ -62,7 +62,7 @@ export default function LandingPage() {
 
       <div className="text-center">
         <p className="text-2xl mb-6">Ready to join the DiscoMatch revolution?</p>
-        <Button className="text-xl py-6 px-12 rounded-full bg-white text-purple-600 hover:bg-purple-100 transition-colors duration-300">
+        <Button className="text-xl py-6 px-12 rounded-full bg-black text-purple-600 hover:bg-purple-100 transition-colors duration-300">
           {Login()}
         </Button>
       </div>
