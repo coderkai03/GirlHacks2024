@@ -44,7 +44,7 @@ import { ChevronDown } from "lucide-react"
     "HackDuke"
   ]
 
-export enum AI_SUGGESTIONS {
+enum AI_SUGGESTIONS {
   ICE_BREAKER_QUESTIONS = "ice_breaker_questions",
   RECOMMENDED_PROJECTS = "recommended_projects",
   SUGGESTED_CONVERSATION_TOPICS = "suggested_conversation_topics",
