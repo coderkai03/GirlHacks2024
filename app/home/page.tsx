@@ -164,13 +164,11 @@ export default function SwipeScreen() {
     });
     const prompt = `
       Prompt:
-You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (${
+You are a bot that helps to team up hackathon participants. Given the provided JSON data about two hackathon participants (current user: ${
       userData.name
-    } and ${
+    } and potential team mate ${
       profile.name
-    }), their interests, and personalities, generate a JSON output with the following information for ${
-      userData.name
-    } to ask ${profile.name}:
+    }), their interests, and personalities, generate a JSON output with the following information:
 Compatibility Score: a numeric score out of 100 of how compatibility the two hackers are in a team. Try to keep the range within 70-90.
 Why you should team up: Tell ${userData.name} how ${
       profile.name
