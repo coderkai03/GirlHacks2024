@@ -74,6 +74,8 @@ export const UserDataProvider = ({ children } : {children: any}) => {
   useEffect(() => {
     const fetchUserData = async (auth0User: UserProfile | undefined) => {
       if (!auth0User) return
+      setUserData(defaultUserData)
+      console.log(auth0User.sub)
 
     const response = await fetch(`/api/users?sub=${auth0User.sub}`);
           if (!response.ok) {
