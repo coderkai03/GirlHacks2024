@@ -264,7 +264,7 @@ All content must be specific and hyper relevant to the matching and non matching
 
   const ProfileContentBack = ({ profile }: { profile: UserData }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
-      <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
+      <CardContent className="flex flex-col items-center p-6 -mt-24 relative h-full max-h-[75vh] overflow-y-auto">
         <Button className="m-4">Generate suggestions</Button>
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
