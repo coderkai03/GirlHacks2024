@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useUserData } from "../UserDataContext";
+import { UserData, useUserData } from "../UserDataContext";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { cleanJsonString } from "../helpers";
 import {
@@ -66,7 +66,8 @@ interface Profile {
   videoUrl: string;
 }
 
-const mockProfiles: Profile[] = [
+
+const old = [
   {
     id: "1",
     name: "Alice",
@@ -103,7 +104,7 @@ const mockProfiles: Profile[] = [
 ];
 
 export default function SwipeScreen() {
-  const { userData } = useUserData();
+  const { userData, usersData } = useUserData();
   const [isResponseGenerating, setIsResponseGenerating] = useState(false)
   const [currentProfile, setCurrentProfile] = useState(0);
   const [response, setResponse] = useState({
@@ -113,6 +114,8 @@ export default function SwipeScreen() {
     [AI_SUGGESTIONS.SUGGESTED_CONVERSATION_TOPICS]: [],
     [AI_SUGGESTIONS.RECOMMENDED_PROJECTS]: [],
   });
+  const mockProfiles = usersData;
+
 
   const handleSwipe = (direction: "left" | "right") => {
     if (direction === "right") {
@@ -143,7 +146,7 @@ export default function SwipeScreen() {
     </ul>
   );
 
-  async function generate_suggestions(profile: Profile) {
+  async function generate_suggestions(profile: UserData) {
     if (isResponseGenerating) return
     setIsResponseGenerating(true)
     setResponse({
@@ -206,10 +209,10 @@ All content must be specific and hyper relevant to the matching and non matching
     generate_suggestions(profile);
   }, [profile]);
 
-  const ProfileContentFront = ({ profile }: { profile: Profile }) => (
+  const ProfileContentFront = ({ profile }: { profile: UserData }) => profile && (
     <div onClick={() => setIsFlipped(!isFlipped)}>
       
-      {profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
+      {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
       alt="this slowpoke moves"    
            width="640"
         height="360"/> : <video
@@ -217,10 +220,18 @@ All content must be specific and hyper relevant to the matching and non matching
         width={640}
         height={360}
         autoPlay
-      />}
+      />} */}
+
+      <video
+        src={"https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"}
+        width={640}
+        height={360}
+        autoPlay
+      />
+
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
         <Avatar className="w-32 h-32 border-4 border-grey-900 mb-4">
-          <AvatarImage src={profile.image} alt={profile.name} />
+          <AvatarImage src={profile.picture} alt={profile.name} />
           <AvatarFallback>{profile.name[0]}</AvatarFallback>
         </Avatar>
         <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
@@ -230,7 +241,7 @@ All content must be specific and hyper relevant to the matching and non matching
         </div>
         <p className="text-center mb-4">{profile.bio}</p>
         <div className="flex flex-wrap justify-center gap-2 mb-4">
-          {profile.techInterests.map((interest, index) => (
+          {profile.techInterests.split(",").map((interest, index) => (
             <Badge key={index} variant="secondary">
               <Code className="w-3 h-3 mr-1" />
               {interest}
@@ -238,7 +249,7 @@ All content must be specific and hyper relevant to the matching and non matching
           ))}
         </div>
         <div className="flex flex-wrap justify-center gap-2 mb-4">
-          {profile.nonTechInterests.map((interest, index) => (
+          {profile.nonTechInterests.split(",").map((interest, index) => (
             <Badge key={index} variant="outline">
               {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
               {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
@@ -251,7 +262,7 @@ All content must be specific and hyper relevant to the matching and non matching
     </div>
   );
 
-  const ProfileContentBack = ({ profile }: { profile: Profile }) => (
+  const ProfileContentBack = ({ profile }: { profile: UserData }) => (
     <div onClick={() => setIsFlipped(!isFlipped)}>
       <CardContent className="flex flex-col items-center p-6 -mt-24 relative">
         <Button className="m-4">Generate suggestions</Button>
