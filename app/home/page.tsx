@@ -294,16 +294,18 @@ All content must be specific and hyper relevant to the matching and non matching
 
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const DropDown = () => (
-    <div className="m-8 self-start">
+  return (
+    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+      
+      <div className="m-8 self-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-40">
+              <Button variant="outline" className="w-w-40 border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-white rounded">
                 Hackathons
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 items-center">
+            <DropdownMenuContent className="w-40 items-center border-1.5 border-purple-500 text-white-500 bg-blue-400 hover:bg-blue-500 hover:text-black rounded">
               <DropdownMenuLabel>Select a Hackathon</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {hackathons.map((hackathon, index) => (
@@ -312,54 +314,41 @@ All content must be specific and hyper relevant to the matching and non matching
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-  )
-
-  return (
-    <div className="flex flex-row items-center relative min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
       
-      <div className="flex flex-grow items-center justify-center">
-        <div className="flex flex-row items-center">
-          {/* Dropdown */}
-          <div className="">
-            <DropDown />
-          </div>
+        <div className="flex flex-grow items-center justify-center">
+    <div className="flex flex-row items-center">
+      <Button
+        className="mr-8"
+        variant="destructive"
+        size="icon"
+        onClick={() => handleSwipe("left")}
+      >
+        <X className="h-4 w-4" />
+      </Button>
 
-          {/* Profile card */}
-          <div className="flex flex-grow items-center justify-center">
-            <Button
-              className="mr-8"
-              variant="destructive"
-              size="icon"
-              onClick={() => handleSwipe("left")}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-            <ReactCardFlip isFlipped={isFlipped}>
-              <div key="front">
-                <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
-                  <ProfileContentFront profile={profile} />
-                </Card>
-              </div>
-              <div key="back">
-                <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
-                  <ProfileContentBack profile={profile} />
-                </Card>
-              </div>
-            </ReactCardFlip>
-            <Button
-              variant="default"
-              size="icon"
-              onClick={() => handleSwipe("right")}
-              className="bg-green-500 hover:bg-green-600 ml-8"
-            >
-              <Check className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Empty space */}
-          <div></div>
+      <ReactCardFlip isFlipped={isFlipped}>
+        <div key="front">
+          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            <ProfileContentFront profile={profile} />
+          </Card>
         </div>
-      </div>
+        <div key="back">
+          <Card className="h-[75vh] max-w-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            <ProfileContentBack profile={profile} />
+          </Card>
+        </div>
+      </ReactCardFlip>
+
+      <Button
+        variant="default"
+        size="icon"
+        onClick={() => handleSwipe("right")}
+        className="bg-green-500 hover:bg-green-600 ml-8"
+      >
+        <Check className="h-4 w-4" />
+      </Button>
+    </div>
+  </div>
     </div>
   );
 }
