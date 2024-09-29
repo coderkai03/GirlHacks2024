@@ -14,6 +14,7 @@ import {useUserData} from '../UserDataContext'
 import ProfilePreview from './ProfilePreview'
 import ProfileSettings from './ProfileSettings'
 import { useRef } from 'react'
+import BannerSetting from './BannerSetting'
 
 export default function DiscoProfileScreen() {
   const { user: auth0User } = useUser();
@@ -102,6 +103,7 @@ export default function DiscoProfileScreen() {
             <TabsList className="grid w-full grid-cols-2 bg-purple-800">
                 <TabsTrigger value="settings" className="data-[state=active]:bg-purple-600">Settings</TabsTrigger>
                 <TabsTrigger value="preview" className="data-[state=active]:bg-purple-600">Preview</TabsTrigger>
+                <TabsTrigger value="banner" className="data-[state=active]:bg-purple-600">Banner</TabsTrigger>
             </TabsList>
             <TabsContent value='settings'>
                 <ProfileSettings userData={userData} />
@@ -109,9 +111,13 @@ export default function DiscoProfileScreen() {
             <TabsContent value='preview'>
                 <ProfilePreview userData={userData} glowColor={glowColor} />
             </TabsContent>
+            <TabsContent value='banner'>
+                <BannerSetting userData={userData} glowColor={glowColor} />
+            </TabsContent>
+            
         </Tabs>
         </div>
-        <Button onClick={() => alert(console.log(userData))}>User Data</Button>
+      {/*<Button onClick={() => alert(console.log(userData))}>User Data</Button>*/}
       </div>
       </div>
   
