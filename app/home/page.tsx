@@ -173,7 +173,12 @@ All content must be specific and hyper relevant to the matching and non matching
     const resultString = result.response.text();
     console.log(resultString);
     const cleanedString = cleanJsonString(resultString);
-    const resultObject = JSON.parse(cleanedString);
+    let resultObject = defaultResponse;
+    try {
+     resultObject = JSON.parse(cleanedString);
+    } catch (e) {
+      alert("error")
+    }
     setResponse(resultObject);
     setIsResponseGenerating(false);
   }
@@ -327,9 +332,9 @@ All content must be specific and hyper relevant to the matching and non matching
       <CardContent className="flex flex-col items-center p-6 relative h-full max-h-[75vh] overflow-y-auto">
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
-            Compatibility Score
+            Compatibility Score: {response["compatibility_score"]}%
+
           </h3>
-          {response["compatibility_score"]}
         </div>
         <div className="suggestion-category mb-4">
           <h3 className="text-xl font-semibold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">
