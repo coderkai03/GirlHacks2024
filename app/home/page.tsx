@@ -240,8 +240,8 @@ All content must be specific and hyper relevant to the matching and non matching
           <span className="text-sm font-semibold">{profile.wins} Wins</span>
         </div>
         <p className="text-center mb-4">{profile.bio}</p>
-        {/* <div className="flex flex-wrap justify-center gap-2 mb-4">
-          {profile.techInterests.map((interest, index) => (
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
+          {profile.techInterests.split(",").map((interest, index) => (
             <Badge key={index} variant="secondary">
               <Code className="w-3 h-3 mr-1" />
               {interest}
@@ -249,7 +249,7 @@ All content must be specific and hyper relevant to the matching and non matching
           ))}
         </div>
         <div className="flex flex-wrap justify-center gap-2 mb-4">
-          {profile.nonTechInterests.map((interest, index) => (
+          {profile.nonTechInterests.split(",").map((interest, index) => (
             <Badge key={index} variant="outline">
               {index === 0 && <Headphones className="w-3 h-3 mr-1" />}
               {index === 1 && <Gamepad className="w-3 h-3 mr-1" />}
@@ -257,7 +257,7 @@ All content must be specific and hyper relevant to the matching and non matching
               {interest}
             </Badge>
           ))}
-        </div> */}
+        </div>
       </CardContent>
     </div>
   );
