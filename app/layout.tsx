@@ -16,8 +16,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Tinder",
-  description: "Find your hacker mate!",
+  title: "DiscoMatch",
+  description: "Find YOUR perfect hackathon team powered by AI!",
 };
 
 export default function RootLayout({
