@@ -95,6 +95,7 @@ export default function HomeScreen() {
         </div>
       </div>
 
+      {!user && <p>Please log in to get started!</p>}
       {currentScreen == Screens.Home && <SwipeScreen />}
       {currentScreen == Screens.Teams && <Teams />}
       {currentScreen == Screens.Profile && <Profile />}
