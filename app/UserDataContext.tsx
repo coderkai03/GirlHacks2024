@@ -30,6 +30,7 @@ export type UserData = {
   preferences: string;
   discord: string;
   linkedin: string;
+  videoUrl: string;
 };
 
 type UserDataContextType = {
@@ -63,6 +64,7 @@ const defaultUserData = {
   preferences: "",
   discord: "",
   linkedin: "",
+  videoUrl: "",
 };
 
 const UserDataContext = createContext<UserDataContextType>({

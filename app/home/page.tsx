@@ -216,12 +216,16 @@ Reminder to not have a comma for the last element of a list.
     // alert(JSON.stringify(resultObject));
   }
 
-  useEffect(() => {
-    generate_suggestions(profile);
-  }, [profile]);
+  // useEffect(() => {
+  //   // generate_suggestions(profile);
+  // }, [profile]);
 
   const ProfileContentFront = ({ profile }: { profile: UserData }) => profile && (
-    <div onClick={() => setIsFlipped(!isFlipped)}>
+    <div onClick={() => {
+      setIsFlipped(!isFlipped)
+      generate_suggestions(profile);
+    }
+    }>
       
       {/* {profile.videoUrl && profile.videoUrl.includes(".gif") ? <img src={profile.videoUrl} 
       alt="this slowpoke moves"    
@@ -234,7 +238,7 @@ Reminder to not have a comma for the last element of a list.
       />} */}
 
       <video
-        src={"https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"}
+        src={profile.videoUrl || "https://cdn.discordapp.com/attachments/1289612458201448449/1289715239805521941/RmVweZEmPUjpbJxR4CniuYxIgEl77Bcle3sLZa9s.mp4?ex=66f9d46a&is=66f882ea&hm=fb05ac3c263bb8a106ebe801b7715f6cb9fa4c303f055c22824c2a8d3e27518c&"}
         width={640}
         height={360}
         autoPlay
